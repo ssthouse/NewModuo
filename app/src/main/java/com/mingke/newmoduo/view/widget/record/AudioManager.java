@@ -1,4 +1,4 @@
-package com.mingke.newmoduo.widget.record;
+package com.mingke.newmoduo.view.widget.record;
 
 import android.media.MediaRecorder;
 import android.os.Environment;

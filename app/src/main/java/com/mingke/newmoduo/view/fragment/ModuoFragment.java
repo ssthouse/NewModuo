@@ -1,21 +1,21 @@
-package com.mingke.newmoduo.view;
+package com.mingke.newmoduo.view.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Button;
-import android.widget.ListView;
 
 import com.github.florent37.viewanimator.ViewAnimator;
 import com.mingke.newmoduo.R;
 import com.mingke.newmoduo.model.event.ModuoBigEvent;
 import com.mingke.newmoduo.util.DimenUtil;
-import com.mingke.newmoduo.widget.ModuoView;
+import com.mingke.newmoduo.view.widget.ModuoView;
 
 import de.greenrobot.event.EventBus;
 import timber.log.Timber;
@@ -28,7 +28,7 @@ public class ModuoFragment extends Fragment {
     private ModuoView moduoView;
     private Button btnRecord;
 
-    private ListView lvChat;
+    private RecyclerView recycleChat;
 
     private int bigModuoHeight;
     private int smallModuoHeight;
@@ -53,7 +53,7 @@ public class ModuoFragment extends Fragment {
     }
 
     private void initView(View rootView) {
-        lvChat = (ListView) rootView.findViewById(R.id.id_lv_chat);
+        recycleChat = (RecyclerView) rootView.findViewById(R.id.id_lv_chat);
 
         moduoView = (ModuoView) rootView.findViewById(R.id.id_moduo);
         moduoView.post(new Runnable() {
@@ -75,8 +75,8 @@ public class ModuoFragment extends Fragment {
 
     //魔哆变小
     private void animateToSmall() {
-        lvChat.setVisibility(View.VISIBLE);
-        ViewAnimator.animate(lvChat)
+        recycleChat.setVisibility(View.VISIBLE);
+        ViewAnimator.animate(recycleChat)
                 .height(0, bigModuoHeight - smallModuoHeight)
                 .andAnimate(moduoView)
                 .height(bigModuoHeight, smallModuoHeight)
@@ -87,7 +87,7 @@ public class ModuoFragment extends Fragment {
 
     //魔哆变大
     private void animateToBig() {
-        ViewAnimator.animate(lvChat)
+        ViewAnimator.animate(recycleChat)
                 .height(bigModuoHeight - smallModuoHeight, 0)
                 .andAnimate(moduoView)
                 .height(smallModuoHeight, bigModuoHeight)

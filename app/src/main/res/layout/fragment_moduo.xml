@@ -5,7 +5,7 @@
     android:orientation="vertical">
 
     <!--魔哆-->
-    <com.mingke.newmoduo.widget.ModuoView
+    <com.mingke.newmoduo.view.widget.ModuoView
         android:clickable="true"
         android:id="@+id/id_moduo"
         android:layout_width="match_parent"
@@ -13,8 +13,8 @@
         android:layout_weight="1"/>
 
     <!--聊天列表-->
-    <ListView
-        android:id="@+id/id_lv_chat"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/id_recycle_chat"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -28,7 +28,7 @@
         android:layout_height="1dp"
         android:background="#cccccc" />
 
-    <com.mingke.newmoduo.widget.record.RecordButton
+    <com.mingke.newmoduo.view.widget.record.RecordButton
         android:id="@+id/id_btn_record"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

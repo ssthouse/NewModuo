@@ -1,4 +1,4 @@
-package com.mingke.newmoduo.widget;
+package com.mingke.newmoduo.view.widget;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -15,6 +15,7 @@ import de.greenrobot.event.EventBus;
 import timber.log.Timber;
 
 /**
+ * 魔哆
  * Created by ssthouse on 2016/1/24.
  */
 public class ModuoView extends View implements View.OnClickListener {
@@ -72,7 +73,6 @@ public class ModuoView extends View implements View.OnClickListener {
         if (currentState == state) {
             return;
         }
-        Timber.e(state.name() + "-----------------------------------");
         currentState = state;
         invalidate();
     }

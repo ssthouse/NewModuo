@@ -1,4 +1,4 @@
-package com.mingke.newmoduo.widget.record;
+package com.mingke.newmoduo.view.widget.record;
 
 import android.app.Dialog;
 import android.content.Context;
