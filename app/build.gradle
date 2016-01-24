@@ -24,8 +24,15 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
+    //log
+    compile 'com.jakewharton.timber:timber:4.1.0'
     //dialog 控件
     compile('com.github.afollestad.material-dialogs:core:0.8.5.2@aar') {
         transitive = true
     }
+    //动画
+    compile 'com.github.florent37:viewanimator:1.0.1@aar'
+    compile 'com.nineoldandroids:library:2.4.0'
+    //事件总线
+    compile 'de.greenrobot:eventbus:2.4.0'
 }

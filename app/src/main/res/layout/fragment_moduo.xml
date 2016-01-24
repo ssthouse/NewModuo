@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!--魔哆-->
+    <com.mingke.newmoduo.widget.ModuoView
+        android:clickable="true"
+        android:id="@+id/id_moduo"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <!--聊天列表-->
+    <ListView
+        android:id="@+id/id_lv_chat"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:entries="@array/TestArray"
+        android:visibility="gone" />
+
+
+    <!--语音按钮-->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#cccccc" />
+
+    <com.mingke.newmoduo.widget.record.RecordButton
+        android:id="@+id/id_btn_record"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="48dp"
+        android:layout_marginRight="48dp"
+        android:layout_marginTop="6dp"
+        android:background="@drawable/btn_record_normal"
+        android:minHeight="0dp"
+        android:padding="5dp"
+        android:text="@string/str_record_normal" />
+
+</LinearLayout>

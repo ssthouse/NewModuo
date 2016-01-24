@@ -2,16 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="200dp"
     android:layout_height="200dp"
-    android:padding="20dp"
-    android:gravity="center"
     android:background="@drawable/dialog_loading_bg"
-    android:orientation="vertical">
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="20dp">
 
     <LinearLayout
-        android:gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:orientation="vertical">
+
         <LinearLayout
             android:id="@+id/id_ll_recording"
             android:layout_width="wrap_content"
@@ -35,20 +36,20 @@
         </LinearLayout>
 
         <TextView
-            android:textColor="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:text="手指上滑 取消发送"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:textColor="@color/white" />
     </LinearLayout>
 
     <LinearLayout
-        android:visibility="gone"
         android:id="@+id/id_ll_want_cancel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -61,6 +62,25 @@
             android:layout_marginTop="20dp"
             android:text="@string/str_record_want_cancel" />
 
+    </LinearLayout>
+
+    <!--录音事件过短的Dialog-->
+    <LinearLayout
+        android:id="@+id/id_ll_too_short"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/voice_to_short" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/str_record_too_short" />
     </LinearLayout>
 
 </LinearLayout>
