@@ -41,14 +41,13 @@ public class ModuoFragment extends Fragment {
         EventBus.getDefault().register(this);
         View rootView = inflater.inflate(R.layout.fragment_moduo, container, false);
         initView(rootView);
-        initDimens();
         return rootView;
     }
 
 
     private void initDimens() {
-        bigModuoHeight = DimenUtil.dp2px(getContext(), 400);
-        smallModuoHeight = DimenUtil.dp2px(getContext(), 60);
+        bigModuoHeight = moduoView.getHeight();
+        smallModuoHeight = DimenUtil.dp2px(getContext(), 100);
         Timber.e(moduoView.getHeight()+"                我魔哆就这么高");
         Timber.e("big:  " + bigModuoHeight + "    small:   " + smallModuoHeight);
     }
@@ -57,13 +56,18 @@ public class ModuoFragment extends Fragment {
         lvChat = (ListView) rootView.findViewById(R.id.id_lv_chat);
 
         moduoView = (ModuoView) rootView.findViewById(R.id.id_moduo);
+        moduoView.post(new Runnable() {
+            @Override
+            public void run() {
+                initDimens();
+            }
+        });
 
         btnRecord = (Button) rootView.findViewById(R.id.id_btn_record);
         btnRecord.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 animateToSmall();
-                Timber.e("变小!!!!!!!!!!!!!!!");
                 return true;
             }
         });
