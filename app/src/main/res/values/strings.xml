@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">NewModuo</string>
+
+    <!--录音按钮状态-->
+    <string name="str_record_normal">按住 说话</string>
+    <string name="str_record_recording">松开 结束</string>
+    <string name="str_record_want_cancel">松开手指 取消发送</string>
 </resources>
