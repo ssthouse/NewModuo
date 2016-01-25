@@ -58,6 +58,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.Holder> {
         return msgList.size();
     }
 
+    //增加消息
     public void addMsg(MsgBean msgBean) {
         msgList.add(msgBean);
     }

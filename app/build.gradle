@@ -35,4 +35,6 @@ dependencies {
     compile 'com.nineoldandroids:library:2.4.0'
     //事件总线
     compile 'de.greenrobot:eventbus:2.4.0'
+    //数据库
+    compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
 }

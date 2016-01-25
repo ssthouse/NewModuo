@@ -1,10 +1,24 @@
 package com.mingke.newmoduo.view.adapter;
 
+import com.activeandroid.Model;
+import com.activeandroid.annotation.Column;
+import com.activeandroid.annotation.Table;
+
 /**
  * 消息数据bean
  * Created by ssthouse on 2016/1/25.
  */
-public class MsgBean {
+@Table(name = "Message")
+public class MsgBean extends Model{
+
+    //映射到数据库
+    public static final String TABLE_MSG = "Message";
+    public static final String COLUMN_MSG_TYPE = "MsgType";
+    public static final String COLUMN_MSG_STATE = "MsgState";
+    public static final String COLUMN_TEXT = "Text";
+    public static final String COLUMN_AUDIO_PATH = "AudioPath";
+    public static final String COLUMN_IMAGE_PATH = "ImgPath";
+    public static final String COLUMN_IS_FROM_MODUO = "IsModuo";
 
     //消息类型枚
     public static final int TYPE_MODUO_TEXT = 1000;
@@ -21,22 +35,29 @@ public class MsgBean {
     public static final int STATE_RECEIPT = 1009;
 
     //消息类型
+    @Column(name = COLUMN_MSG_TYPE)
     private int msgType;
     //消息状态
+    @Column(name = COLUMN_MSG_STATE)
     private int msgState;
 
     //文字
+    @Column(name = COLUMN_TEXT)
     private String text;
     //音频数据
+    @Column(name = COLUMN_AUDIO_PATH)
     private String audioFilePath;
     //图片数据
+    @Column(name = COLUMN_IMAGE_PATH)
     private String imgFilePath;
 
     //是否是魔哆发送的
+    @Column(name = COLUMN_IS_FROM_MODUO)
     private boolean isFromModuo;
 
     //空 构造方法
     private MsgBean() {
+        super();
     }
 
     /**

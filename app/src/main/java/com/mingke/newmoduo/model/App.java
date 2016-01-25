@@ -2,6 +2,8 @@ package com.mingke.newmoduo.model;
 
 import android.app.Application;
 
+import com.activeandroid.ActiveAndroid;
+
 import timber.log.Timber;
 
 /**
@@ -13,5 +15,6 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         Timber.plant(new Timber.DebugTree());
+        ActiveAndroid.initialize(this);
     }
 }
