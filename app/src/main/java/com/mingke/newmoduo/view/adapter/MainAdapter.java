@@ -12,9 +12,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.mingke.newmoduo.R;
+import com.mingke.newmoduo.view.widget.AudioPlayButton;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import timber.log.Timber;
 
 /**
  * 魔哆聊天adapter
@@ -53,7 +56,24 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.Holder> {
     @Override
     public void onBindViewHolder(Holder holder, int position) {
         //UI填充
-//        holder.
+        switch (msgList.get(position).getMsgType()){
+            case MsgBean.TYPE_MODUO_TEXT:
+                break;
+            case MsgBean.TYPE_MODUO_AUDIO:
+                break;
+            case MsgBean.TYPE_MODUO_IMAGE:
+                break;
+            case MsgBean.TYPE_USER_TEXT:
+                break;
+            case MsgBean.TYPE_USER_AUDIO:
+                Timber.e("填充用户语音播放按钮");
+                //添加语音播放按钮
+                AudioPlayButton audioPlayButton = new AudioPlayButton(mContext);
+                audioPlayButton.setAudioFilePath(msgList.get(position).getAudioFilePath());
+                holder.conventLayout.addView(audioPlayButton);
+                break;
+            case MsgBean.TYPE_USER_IMAGE:
+        }
     }
 
     @Override
@@ -65,7 +85,6 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.Holder> {
     public void addMsg(MsgBean msgBean) {
         msgList.add(msgBean);
         notifyDataSetChanged();
-//        mRecyclerView.smoothScrollToPosition(msgList.size() * 200);
         mRecyclerView.smoothScrollBy(0, msgList.size() * 200);
     }
 

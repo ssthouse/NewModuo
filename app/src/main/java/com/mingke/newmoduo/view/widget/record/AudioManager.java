@@ -58,7 +58,6 @@ public class AudioManager {
             mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.AMR_NB);
             mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
             mMediaRecorder.setOutputFile(mCurrentFilePath);
-            mMediaRecorder.setOnErrorListener(null);
             mMediaRecorder.prepare();
             mMediaRecorder.start();
             isPrepared = true;
