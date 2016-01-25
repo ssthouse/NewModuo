@@ -4,8 +4,14 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.mingke.newmoduo.R;
+import com.mingke.newmoduo.model.event.AudioPreparedEvent;
+import com.mingke.newmoduo.view.adapter.MsgBean;
+
+import de.greenrobot.event.EventBus;
+import timber.log.Timber;
 
 /**
  * 录音按钮
@@ -18,39 +24,55 @@ public class RecordButton extends Button {
     //音频管理器
     private AudioManager mAudioManager;
 
+    //手指按下的时间
+    private long touchDownTime;
+
     //目前按钮状态
     private State currentState = State.STATE_NORMAL;
 
-    private enum State {
+    public enum State {
         //正常    正在录音    想取消
         STATE_NORMAL, STATE_RECORDING, STATE_WANT_CANCEL
     }
 
     /**
      * 只能在xml用的构造方法
-     * @param context
-     * @param attrs
      */
     public RecordButton(Context context, AttributeSet attrs) {
         super(context, attrs);
+        EventBus.getDefault().register(this);
         initView();
     }
 
     private void initView() {
         mDialogManager = new DialogManager(getContext());
         mAudioManager = AudioManager.getmInstance();
-        mAudioManager.setmListener(new AudioManager.AudioStateListener() {
-            @Override
-            public void wellPrepared() {
 
-            }
-        });
-
+//        setOnLongClickListener(new OnLongClickListener() {
+//            @Override
+//            public boolean onLongClick(View v) {
+//                Timber.e("我在长按-----------------");
+//                mAudioManager.prepareAudio();
+//                return true;
+//            }
+//        });
 
     }
 
+    /**
+     * 录音准备完毕事件
+     *
+     * @param event
+     */
+    public void onEventMainThread(AudioPreparedEvent event) {
+        Timber.e("收到消息--------------------------");
+        //显示正在录音状态
+        changeState(State.STATE_RECORDING);
+    }
+
+
     //改变按钮状态
-    private void changeState(State newState) {
+    public void changeState(State newState) {
         if (currentState == newState) {
             return;
         }
@@ -64,7 +86,9 @@ public class RecordButton extends Button {
                 break;
             case STATE_RECORDING:
                 setText(R.string.str_record_recording);
-                mDialogManager.showRecordingDialog();
+                if (mAudioManager.isPrepared()) {
+                    mDialogManager.showRecordingDialog();
+                }
                 setBackgroundResource(R.drawable.btn_record_recording);
                 break;
             case STATE_WANT_CANCEL:
@@ -82,6 +106,9 @@ public class RecordButton extends Button {
         int y = (int) event.getY();
         switch (action) {
             case MotionEvent.ACTION_DOWN:
+                //手指摸下时就开始准备录音
+                mAudioManager.prepareAudio();
+                touchDownTime = System.currentTimeMillis();
                 changeState(State.STATE_RECORDING);
                 break;
             case MotionEvent.ACTION_MOVE:
@@ -93,9 +120,22 @@ public class RecordButton extends Button {
                 break;
             case MotionEvent.ACTION_UP:
                 changeState(State.STATE_NORMAL);
+                if (isWantCancel(x, y)) {
+                    mAudioManager.cancel();
+                } else {
+                    if ((System.currentTimeMillis() - touchDownTime) < 500) {
+                        mAudioManager.cancel();
+                        Toast.makeText(getContext(), "多说几句吧", Toast.LENGTH_SHORT);
+                    } else {
+                        mAudioManager.release();
+                        //添加一条消息
+                        EventBus.getDefault().post(MsgBean.getInstance(MsgBean.TYPE_USER_AUDIO,
+                                MsgBean.STATE_SENDING, mAudioManager.getmCurrentFilePath()));
+                        Timber.e("发出添加msg的event");
+                    }
+                }
                 break;
         }
-
         return super.onTouchEvent(event);
     }
 
@@ -103,4 +143,5 @@ public class RecordButton extends Button {
     private boolean isWantCancel(int x, int y) {
         return x < 0 || x > getWidth() || y < -50 || y > getHeight() + 50;
     }
+
 }

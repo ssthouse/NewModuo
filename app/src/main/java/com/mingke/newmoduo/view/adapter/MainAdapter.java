@@ -51,6 +51,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.Holder> {
     @Override
     public void onBindViewHolder(Holder holder, int position) {
         //UI填充
+//        holder.
     }
 
     @Override

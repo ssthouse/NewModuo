@@ -35,6 +35,32 @@
 
 
 
+    <!-- text appearance -->
+    <style name="TextAppearance"/>
+
+    <style name="TextAppearance.Large">
+        <item name="android:textSize">@dimen/textsize_large</item>
+    </style>
+
+    <style name="TextAppearance.Large.Gray">
+        <item name="android:textColor">@color/common_gray</item>
+    </style>
+
+    <style name="TextAppearance.Normal">
+        <item name="android:textSize">@dimen/textsize_normal</item>
+    </style>
+
+    <style name="TextAppearance.Normal.Bold">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TextAppearance.Normal.Gray">
+        <item name="android:textColor">@color/common_gray</item>
+    </style>
+
+    <style name="TextAppearance.Small"/>
+
+
     <!-- Avatar -->
     <style name="Avatar">
         <item name="android:layout_width">45dp</item>

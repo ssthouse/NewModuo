@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
@@ -76,14 +75,8 @@ public class ModuoFragment extends Fragment {
             }
         });
 
+        //录音按钮
         btnRecord = (RecordButton) rootView.findViewById(R.id.id_btn_record);
-        btnRecord.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                animateToSmall();
-                return true;
-            }
-        });
     }
 
     //魔哆变小
@@ -116,6 +109,20 @@ public class ModuoFragment extends Fragment {
      */
     public void onEventMainThread(ModuoBigEvent event) {
         animateToBig();
+    }
+
+    /**
+     * 添加msg回调
+     *
+     * @param msgBean
+     */
+    public void onEventMainThread(MsgBean msgBean) {
+        if (msgBean == null) {
+            return;
+        }
+        mAdapter.addMsg(msgBean);
+        //魔哆变小
+        animateToSmall();
     }
 
     @Override

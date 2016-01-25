@@ -8,7 +8,7 @@ import com.activeandroid.annotation.Table;
  * 消息数据bean
  * Created by ssthouse on 2016/1/25.
  */
-@Table(name = "Message")
+@Table(name = MsgBean.TABLE_MSG)
 public class MsgBean extends Model{
 
     //映射到数据库
@@ -19,6 +19,7 @@ public class MsgBean extends Model{
     public static final String COLUMN_AUDIO_PATH = "AudioPath";
     public static final String COLUMN_IMAGE_PATH = "ImgPath";
     public static final String COLUMN_IS_FROM_MODUO = "IsModuo";
+    public static final String COLUMN_TIME_STAMP = "TimeStamp";
 
     //消息类型枚
     public static final int TYPE_MODUO_TEXT = 1000;
@@ -54,6 +55,8 @@ public class MsgBean extends Model{
     //是否是魔哆发送的
     @Column(name = COLUMN_IS_FROM_MODUO)
     private boolean isFromModuo;
+    @Column(name = COLUMN_TIME_STAMP)
+    private long timeStamp;
 
     //空 构造方法
     private MsgBean() {
@@ -145,5 +148,13 @@ public class MsgBean extends Model{
 
     public void setFromModuo(boolean fromModuo) {
         isFromModuo = fromModuo;
+    }
+
+    public long getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(long timeStamp) {
+        this.timeStamp = timeStamp;
     }
 }

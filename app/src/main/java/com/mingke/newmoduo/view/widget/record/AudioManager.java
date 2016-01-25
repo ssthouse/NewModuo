@@ -3,9 +3,13 @@ package com.mingke.newmoduo.view.widget.record;
 import android.media.MediaRecorder;
 import android.os.Environment;
 
+import com.mingke.newmoduo.model.event.AudioPreparedEvent;
+
 import java.io.File;
 import java.io.IOException;
-import java.util.UUID;
+
+import de.greenrobot.event.EventBus;
+import timber.log.Timber;
 
 /**
  * 音频管理器
@@ -15,17 +19,10 @@ public class AudioManager {
 
     private MediaRecorder mMediaRecorder;
 
-    private String mDir = Environment.getExternalStorageState() + "/NewModuo";
+    private String mDir = Environment.getExternalStorageDirectory() + "/NewModuo";
     private String mCurrentFilePath;
 
-
     private boolean isPrepared = false;
-
-    public interface AudioStateListener {
-        void wellPrepared();
-    }
-
-    private AudioStateListener mListener;
 
     private AudioManager() {
 
@@ -42,37 +39,40 @@ public class AudioManager {
 
     public void prepareAudio() {
         isPrepared = false;
-
+        //初始化文件夹
         File file = new File(mDir);
         if (!file.exists()) {
             file.mkdirs();
         }
         String fileName = generateFileName();
         File outputFile = new File(mDir, fileName);
+        mCurrentFilePath = outputFile.getAbsolutePath();
         mMediaRecorder = new MediaRecorder();
-        mMediaRecorder.setOutputFile(outputFile.getPath());
         try {
             //配置录音参数
+            mMediaRecorder.setOnErrorListener(null);
             mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
             mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.AMR_NB);
             mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+            mMediaRecorder.setOutputFile(mCurrentFilePath);
             mMediaRecorder.prepare();
             mMediaRecorder.start();
             isPrepared = true;
-            mCurrentFilePath = outputFile.getAbsolutePath();
             //准备完毕
-            if (mListener != null) {
-                mListener.wellPrepared();
-            }
+            Timber.e("录音准备完毕----放出event");
+            EventBus.getDefault().post(new AudioPreparedEvent());
         } catch (IOException e) {
             e.printStackTrace();
+            Timber.e("我跪了!!!!!!!!!!!!!!!!!!!");
         }
     }
 
+    //获取随机文件名
     private String generateFileName() {
-        return UUID.randomUUID().toString() + ".amr";
+        return System.currentTimeMillis() + ".amr";
     }
 
+    //音量等级
     public int getLevel(int maxLevel) {
         if (!isPrepared) {
             return 1;
@@ -85,17 +85,17 @@ public class AudioManager {
         return 1;
     }
 
-
-    public void setmListener(AudioStateListener mListener) {
-        this.mListener = mListener;
-    }
-
     public void release() {
+        if(mMediaRecorder == null){
+            return;
+        }
+        isPrepared = false;
         mMediaRecorder.stop();
         mMediaRecorder.release();
         mMediaRecorder = null;
     }
 
+    //取消录制的文件
     public void cancel() {
         release();
         if (mCurrentFilePath != null) {
@@ -103,5 +103,21 @@ public class AudioManager {
             file.deleteOnExit();
             mCurrentFilePath = null;
         }
+    }
+
+    public boolean isPrepared() {
+        return isPrepared;
+    }
+
+    public String getmCurrentFilePath() {
+        return mCurrentFilePath;
+    }
+
+    public void setmCurrentFilePath(String mCurrentFilePath) {
+        this.mCurrentFilePath = mCurrentFilePath;
+    }
+
+    public void setPrepared(boolean prepared) {
+        isPrepared = prepared;
     }
 }
