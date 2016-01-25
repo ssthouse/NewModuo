@@ -6,24 +6,24 @@ package com.mingke.newmoduo.view.adapter;
  */
 public class MsgBean {
 
-    //消息类型枚举
-    public enum MsgType {
-        MODUO_TEXT, MODUO_AUDIO, MODUO_IMAGE,
-        USER_TEXT, USER_AUDIO, USER_IMAGE
-    }
+    //消息类型枚
+    public static final int TYPE_MODUO_TEXT = 1000;
+    public static final int TYPE_MODUO_AUDIO = 1001;
+    public static final int TYPE_MODUO_IMAGE = 1002;
+    public static final int TYPE_USER_TEXT = 1003;
+    public static final int TYPE_USER_AUDIO = 1004;
+    public static final int TYPE_USER_IMAGE = 1005;
 
-    //消息发送状态
-    public enum MsgState {
-        STATE_FILED,
-        STATE_SENT,
-        STATE_SENDING,
-        STATE_RECEIPT
-    }
+    //消息状态
+    public static final int STATE_FILED = 1006;
+    public static final int STATE_SENT = 1007;
+    public static final int STATE_SENDING = 1008;
+    public static final int STATE_RECEIPT = 1009;
 
     //消息类型
-    private MsgType msgType;
+    private int msgType;
     //消息状态
-    private MsgState msgState;
+    private int msgState;
 
     //文字
     private String text;
@@ -36,39 +36,39 @@ public class MsgBean {
     private boolean isFromModuo;
 
     //空 构造方法
-    private  MsgBean() {
+    private MsgBean() {
     }
 
     /**
      * 获取一个实例
-     *
      */
-    public static MsgBean getInstance(MsgType msgType, MsgState msgState, String content) {
+    public static MsgBean getInstance(int msgType, int msgState, String content) {
+        //新建msg---初始化类型, 状态
         MsgBean bean = new MsgBean();
         bean.setMsgType(msgType);
         bean.setMsgState(msgState);
         switch (msgType) {
-            case MODUO_TEXT:
+            case TYPE_MODUO_TEXT:
                 bean.setFromModuo(true);
                 bean.setText(content);
                 break;
-            case MODUO_AUDIO:
+            case TYPE_MODUO_AUDIO:
                 bean.setFromModuo(true);
                 bean.setAudioFilePath(content);
                 break;
-            case MODUO_IMAGE:
+            case TYPE_MODUO_IMAGE:
                 bean.setFromModuo(true);
                 bean.setImgFilePath(content);
                 break;
-            case USER_TEXT:
+            case TYPE_USER_TEXT:
                 bean.setFromModuo(false);
                 bean.setText(content);
                 break;
-            case USER_AUDIO:
+            case TYPE_USER_AUDIO:
                 bean.setFromModuo(false);
                 bean.setAudioFilePath(content);
                 break;
-            case USER_IMAGE:
+            case TYPE_USER_IMAGE:
                 bean.setFromModuo(false);
                 bean.setImgFilePath(content);
                 break;
@@ -78,19 +78,19 @@ public class MsgBean {
 
     //getter-------------------setter-----------------------------------------------------
 
-    public MsgType getMsgType() {
+    public int getMsgType() {
         return msgType;
     }
 
-    public void setMsgType(MsgType msgType) {
+    public void setMsgType(int msgType) {
         this.msgType = msgType;
     }
 
-    public MsgState getMsgState() {
+    public int getMsgState() {
         return msgState;
     }
 
-    public void setMsgState(MsgState msgState) {
+    public void setMsgState(int msgState) {
         this.msgState = msgState;
     }
 

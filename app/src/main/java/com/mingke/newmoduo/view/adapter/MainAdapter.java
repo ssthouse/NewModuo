@@ -58,25 +58,25 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.Holder> {
         return msgList.size();
     }
 
-    public void addMsg(MsgBean msgBean){
+    public void addMsg(MsgBean msgBean) {
         msgList.add(msgBean);
     }
 
     @Override
     public int getItemViewType(int position) {
-        MsgBean.MsgType msgType = msgList.get(position).getMsgType();
+        int msgType = msgList.get(position).getMsgType();
         switch (msgType) {
-            case MODUO_TEXT:
+            case MsgBean.TYPE_MODUO_TEXT:
                 return TYPE_LEFT;
-            case MODUO_AUDIO:
+            case MsgBean.TYPE_MODUO_AUDIO:
                 return TYPE_LEFT;
-            case MODUO_IMAGE:
+            case MsgBean.TYPE_MODUO_IMAGE:
                 return TYPE_LEFT;
-            case USER_TEXT:
+            case MsgBean.TYPE_USER_TEXT:
                 return TYPE_RIGHT;
-            case USER_AUDIO:
+            case MsgBean.TYPE_USER_AUDIO:
                 return TYPE_RIGHT;
-            case USER_IMAGE:
+            case MsgBean.TYPE_USER_IMAGE:
                 return TYPE_RIGHT;
         }
         return TYPE_LEFT;

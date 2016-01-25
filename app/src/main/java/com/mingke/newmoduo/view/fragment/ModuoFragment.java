@@ -62,9 +62,8 @@ public class ModuoFragment extends Fragment {
         recycleChat = (RecyclerView) rootView.findViewById(R.id.id_recycle_chat);
         recycleChat.setLayoutManager(new LinearLayoutManager(getContext()));
         recycleChat.setAdapter(mAdapter);
-        for(int i=0; i<10; i++){
-            mAdapter.addMsg(MsgBean.getInstance(MsgBean.MsgType.MODUO_TEXT,
-                    MsgBean.MsgState.STATE_SENDING, "我在发送一条消息"));
+        for (int i = 0; i < 10; i++) {
+            mAdapter.addMsg(MsgBean.getInstance(MsgBean.TYPE_MODUO_TEXT, MsgBean.STATE_SENDING, "我在发送一条消息"));
         }
 
         moduoView = (ModuoView) rootView.findViewById(R.id.id_moduo);
