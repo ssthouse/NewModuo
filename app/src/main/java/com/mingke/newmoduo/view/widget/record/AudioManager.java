@@ -47,7 +47,11 @@ public class AudioManager {
         String fileName = generateFileName();
         File outputFile = new File(mDir, fileName);
         mCurrentFilePath = outputFile.getAbsolutePath();
-        mMediaRecorder = new MediaRecorder();
+        if(mMediaRecorder == null) {
+            mMediaRecorder = new MediaRecorder();
+        }else{
+            mMediaRecorder.reset();
+        }
         try {
             //配置录音参数
             mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);

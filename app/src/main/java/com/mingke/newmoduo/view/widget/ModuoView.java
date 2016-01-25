@@ -28,16 +28,15 @@ public class ModuoView extends View implements View.OnClickListener {
 
     //控件宽高
     private int width, height;
-    //
+    //魔哆宽高
     private int moduoWidth, moduoHeight;
-
-
-    public enum State {
-        STATE_BIG, STATE_SMALL;
-    }
 
     //当前状态---初始为大!
     private State currentState = State.STATE_BIG;
+
+    public enum State {
+        STATE_BIG, STATE_SMALL
+    }
 
     public ModuoView(Context context) {
         this(context, null);

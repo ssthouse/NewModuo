@@ -65,7 +65,8 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.Holder> {
     public void addMsg(MsgBean msgBean) {
         msgList.add(msgBean);
         notifyDataSetChanged();
-        mRecyclerView.smoothScrollToPosition(msgList.size() * 200);
+//        mRecyclerView.smoothScrollToPosition(msgList.size() * 200);
+        mRecyclerView.smoothScrollBy(0, msgList.size() * 200);
     }
 
     @Override
