@@ -22,16 +22,18 @@ import java.util.List;
  */
 public class MainAdapter extends RecyclerView.Adapter<MainAdapter.Holder> {
 
-    private Context mContext;
-
     private List<MsgBean> msgList;
+
+    private RecyclerView mRecyclerView;
+    private Context mContext;
 
     //判断view的类型(选择左右的xml文件)
     public static final int TYPE_LEFT = 1000;
     public static final int TYPE_RIGHT = 1001;
 
-    public MainAdapter(Context context) {
+    public MainAdapter(Context context, RecyclerView recyclerView) {
         this.mContext = context;
+        this.mRecyclerView = recyclerView;
         msgList = new ArrayList<>();
     }
 
@@ -62,6 +64,8 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.Holder> {
     //增加消息
     public void addMsg(MsgBean msgBean) {
         msgList.add(msgBean);
+        notifyDataSetChanged();
+        mRecyclerView.smoothScrollToPosition(msgList.size() * 200);
     }
 
     @Override

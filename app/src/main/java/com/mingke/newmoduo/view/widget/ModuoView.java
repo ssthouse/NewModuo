@@ -32,7 +32,7 @@ public class ModuoView extends View implements View.OnClickListener {
     private int moduoWidth, moduoHeight;
 
 
-    private enum State {
+    public enum State {
         STATE_BIG, STATE_SMALL;
     }
 
@@ -121,12 +121,18 @@ public class ModuoView extends View implements View.OnClickListener {
     private void drawBig(Canvas canvas) {
         resetDimens();
         CanvasUtil.drawBitmap(canvas, bigModuo, width / 2, height / 2, moduoWidth, moduoHeight);
-        Timber.e("draw big");
     }
 
     private void drawSmall(Canvas canvas) {
         resetDimens();
         CanvasUtil.drawBitmap(canvas, bigModuo, width / 2, height / 2, moduoWidth, moduoHeight);
-        Timber.e("draw small");
+    }
+
+    public State getCurrentState() {
+        return currentState;
+    }
+
+    public void setCurrentState(State currentState) {
+        this.currentState = currentState;
     }
 }

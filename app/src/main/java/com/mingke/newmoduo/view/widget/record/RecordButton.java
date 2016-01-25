@@ -47,16 +47,6 @@ public class RecordButton extends Button {
     private void initView() {
         mDialogManager = new DialogManager(getContext());
         mAudioManager = AudioManager.getmInstance();
-
-//        setOnLongClickListener(new OnLongClickListener() {
-//            @Override
-//            public boolean onLongClick(View v) {
-//                Timber.e("我在长按-----------------");
-//                mAudioManager.prepareAudio();
-//                return true;
-//            }
-//        });
-
     }
 
     /**
@@ -65,7 +55,6 @@ public class RecordButton extends Button {
      * @param event
      */
     public void onEventMainThread(AudioPreparedEvent event) {
-        Timber.e("收到消息--------------------------");
         //显示正在录音状态
         changeState(State.STATE_RECORDING);
     }
@@ -129,9 +118,9 @@ public class RecordButton extends Button {
                     } else {
                         mAudioManager.release();
                         //添加一条消息
+                        Timber.e("发出添加msg的event");
                         EventBus.getDefault().post(MsgBean.getInstance(MsgBean.TYPE_USER_AUDIO,
                                 MsgBean.STATE_SENDING, mAudioManager.getmCurrentFilePath()));
-                        Timber.e("发出添加msg的event");
                     }
                 }
                 break;

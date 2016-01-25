@@ -50,16 +50,16 @@ public class AudioManager {
         mMediaRecorder = new MediaRecorder();
         try {
             //配置录音参数
-            mMediaRecorder.setOnErrorListener(null);
             mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
             mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.AMR_NB);
             mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
             mMediaRecorder.setOutputFile(mCurrentFilePath);
+            mMediaRecorder.setOnErrorListener(null);
             mMediaRecorder.prepare();
             mMediaRecorder.start();
             isPrepared = true;
             //准备完毕
-            Timber.e("录音准备完毕----放出event");
+            Timber.e("准备完毕");
             EventBus.getDefault().post(new AudioPreparedEvent());
         } catch (IOException e) {
             e.printStackTrace();

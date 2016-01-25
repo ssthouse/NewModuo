@@ -57,9 +57,9 @@ public class ModuoFragment extends Fragment {
 
     private void initView(View rootView) {
         //聊天列表
-        mAdapter = new MainAdapter(getContext());
         recycleChat = (RecyclerView) rootView.findViewById(R.id.id_recycle_chat);
         recycleChat.setLayoutManager(new LinearLayoutManager(getContext()));
+        mAdapter = new MainAdapter(getContext(), recycleChat);
         recycleChat.setAdapter(mAdapter);
         for (int i = 0; i < 10; i++) {
             MsgBean msgBean = MsgBean.getInstance(MsgBean.TYPE_MODUO_TEXT, MsgBean.STATE_SENDING, "我在发送一条消息");
@@ -81,6 +81,9 @@ public class ModuoFragment extends Fragment {
 
     //魔哆变小
     private void animateToSmall() {
+        if(moduoView.getCurrentState() == ModuoView.State.STATE_SMALL){
+            return;
+        }
         recycleChat.setVisibility(View.VISIBLE);
         ViewAnimator.animate(recycleChat)
                 .height(0, bigModuoHeight - smallModuoHeight)
@@ -93,6 +96,9 @@ public class ModuoFragment extends Fragment {
 
     //魔哆变大
     private void animateToBig() {
+        if(moduoView.getCurrentState() == ModuoView.State.STATE_BIG){
+            return;
+        }
         ViewAnimator.animate(recycleChat)
                 .height(bigModuoHeight - smallModuoHeight, 0)
                 .andAnimate(moduoView)
@@ -120,9 +126,11 @@ public class ModuoFragment extends Fragment {
         if (msgBean == null) {
             return;
         }
-        mAdapter.addMsg(msgBean);
         //魔哆变小
         animateToSmall();
+        //添加数据到对话框
+        Timber.e("添加msg回调");
+        mAdapter.addMsg(msgBean);
     }
 
     @Override
