@@ -117,7 +117,7 @@ public class RecordButton extends Button {
                 } else {
                     if ((System.currentTimeMillis() - touchDownTime) < 500) {
                         mAudioRecorder.cancel();
-                        Toast.makeText(getContext(), "多说几句吧", Toast.LENGTH_SHORT);
+                        Toast.makeText(getContext(), "多说几句吧", Toast.LENGTH_SHORT).show();
                     } else {
                         mAudioRecorder.release();
                         //添加一条消息

@@ -70,6 +70,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.Holder> {
                 //添加语音播放按钮
                 AudioPlayButton audioPlayButton = new AudioPlayButton(mContext);
                 audioPlayButton.setAudioFilePath(msgList.get(position).getAudioFilePath());
+                holder.conventLayout.removeAllViews();
                 holder.conventLayout.addView(audioPlayButton);
                 break;
             case MsgBean.TYPE_USER_IMAGE:
