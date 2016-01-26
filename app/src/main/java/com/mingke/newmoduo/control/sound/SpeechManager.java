@@ -61,10 +61,10 @@ public class SpeechManager implements ISpeechControl {
         // 注：AUDIO_FORMAT参数语记需要更新版本才能生效
         mSpeechUnderstander.setParameter(SpeechConstant.AUDIO_FORMAT, "wav");
 
+        //参数设置为语义抽取
         mSpeechUnderstander.setParameter(SpeechConstant.DOMAIN, "iat");
         mSpeechUnderstander.setParameter(SpeechConstant.RESULT_TYPE, "json");
         mSpeechUnderstander.setParameter(SpeechConstant.NLP_VERSION, "2.0");
-//        mSpeechUnderstander.setParameter(SpeechConstant.PARAMS , "sch=1");
     }
 
     @Override
@@ -169,5 +169,4 @@ public class SpeechManager implements ISpeechControl {
     private String generateFilePath() {
         return mDir + "/" + System.currentTimeMillis() + ".wav";
     }
-
 }
