@@ -57,6 +57,10 @@ public class AudioPlayer {
             mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
+                    if(currentAudioBtn != null){
+                        //停止动画
+                        currentAudioBtn.stopAnim();
+                    }
                 }
             });
             mMediaPlayer.start();

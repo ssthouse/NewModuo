@@ -1,6 +1,7 @@
 package com.mingke.newmoduo.view.widget;
 
 import android.content.Context;
+import android.graphics.drawable.AnimationDrawable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
@@ -14,7 +15,7 @@ import com.mingke.newmoduo.control.util.AudioPlayer;
  * 动画的实现...
  * Created by ssthouse on 2016/1/25.
  */
-public class AudioPlayButton extends TextView {
+public class AudioPlayButton extends TextView implements IAudioPlayBtnControl {
 
     private String audioFilePath;
     private State currentState;
@@ -39,11 +40,7 @@ public class AudioPlayButton extends TextView {
         currentState = State.STATE_NORMAL;
 
         //背景图片
-        if (isFromModuo) {
-            setBackgroundResource(R.drawable.ic_chat_voice_left);
-        } else {
-            setBackgroundResource(R.drawable.ic_chat_voice_right);
-        }
+        stopAnim();
 
         setOnClickListener(new OnClickListener() {
             @Override
@@ -56,12 +53,40 @@ public class AudioPlayButton extends TextView {
                     AudioPlayer.getInstance(getContext()).playAudio(audioFilePath, AudioPlayButton.this);
                     //切换为播放状态
                     currentState = State.STATE_PLAYING;
+                    //播放动画
+                    playAnim();
                 } else if (currentState == State.STATE_PLAYING) {
                     //暂停
                     AudioPlayer.getInstance(getContext()).pausePlayer();
+                    stopAnim();
                 }
             }
         });
+    }
+
+
+    @Override
+    public void playAnim() {
+        //播放动画
+        if (isFromModuo) {
+            setBackgroundResource(R.drawable.anim_audio_play_btn_left);
+            AnimationDrawable animationDrawable = (AnimationDrawable) getBackground();
+            animationDrawable.start();
+        } else {
+            setBackgroundResource(R.drawable.anim_audio_play_btn_right);
+            AnimationDrawable animationDrawable = (AnimationDrawable) getBackground();
+            animationDrawable.start();
+        }
+    }
+
+    @Override
+    public void stopAnim() {
+        //背景图片
+        if (isFromModuo) {
+            setBackgroundResource(R.drawable.ic_chat_voice_left);
+        } else {
+            setBackgroundResource(R.drawable.ic_chat_voice_right);
+        }
     }
 
     //getter---------------setter-----------------------------------------------
