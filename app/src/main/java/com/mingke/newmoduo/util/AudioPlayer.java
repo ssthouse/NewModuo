@@ -1,6 +1,7 @@
 package com.mingke.newmoduo.util;
 
 import android.content.Context;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 
 import com.mingke.newmoduo.view.widget.AudioPlayButton;
@@ -14,9 +15,9 @@ import timber.log.Timber;
  * 音频播放器
  * Created by ssthouse on 2016/1/25.
  */
-public class AudioHelper {
+public class AudioPlayer {
 
-    private static AudioHelper mInstance;
+    private static AudioPlayer mInstance;
 
     private MediaPlayer mMediaPlayer;
     private Context mContext;
@@ -28,14 +29,14 @@ public class AudioHelper {
     //是否正在播放
     private boolean isPlaying;
 
-    private AudioHelper(Context context) {
+    private AudioPlayer(Context context) {
         this.mContext = context;
         mMediaPlayer = new MediaPlayer();
     }
 
-    public static AudioHelper getInstance(Context context) {
+    public static AudioPlayer getInstance(Context context) {
         if (mInstance == null) {
-            mInstance = new AudioHelper(context);
+            mInstance = new AudioPlayer(context);
         }
         return mInstance;
     }
@@ -50,6 +51,7 @@ public class AudioHelper {
         currentAudioBtn = audioPlayButton;
         try {
             mMediaPlayer.reset();
+            mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
             mMediaPlayer.setDataSource(path);
             mMediaPlayer.prepare();
             mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -86,12 +88,12 @@ public class AudioHelper {
 
 
     //getter---------------------setter-------------------------------
-    public static AudioHelper getmInstance() {
+    public static AudioPlayer getmInstance() {
         return mInstance;
     }
 
-    public static void setmInstance(AudioHelper mInstance) {
-        AudioHelper.mInstance = mInstance;
+    public static void setmInstance(AudioPlayer mInstance) {
+        AudioPlayer.mInstance = mInstance;
     }
 
     public String getCurrentFilePath() {

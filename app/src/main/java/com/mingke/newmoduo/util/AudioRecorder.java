@@ -1,4 +1,4 @@
-package com.mingke.newmoduo.view.widget.record;
+package com.mingke.newmoduo.util;
 
 import android.media.MediaRecorder;
 import android.os.Environment;
@@ -15,7 +15,7 @@ import timber.log.Timber;
  * 音频管理器
  * Created by ssthouse on 2016/1/24.
  */
-public class AudioManager {
+public class AudioRecorder {
 
     private MediaRecorder mMediaRecorder;
 
@@ -24,15 +24,15 @@ public class AudioManager {
 
     private boolean isPrepared = false;
 
-    private AudioManager() {
+    private AudioRecorder() {
 
     }
 
-    private static AudioManager mInstance;
+    private static AudioRecorder mInstance;
 
-    public static AudioManager getmInstance() {
+    public static AudioRecorder getmInstance() {
         if (mInstance == null) {
-            mInstance = new AudioManager();
+            mInstance = new AudioRecorder();
         }
         return mInstance;
     }
@@ -51,6 +51,7 @@ public class AudioManager {
             mMediaRecorder = new MediaRecorder();
         }else{
             mMediaRecorder.reset();
+            mMediaRecorder.release();
         }
         try {
             //配置录音参数

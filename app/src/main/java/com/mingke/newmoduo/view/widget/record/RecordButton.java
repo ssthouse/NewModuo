@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import com.mingke.newmoduo.R;
 import com.mingke.newmoduo.model.event.AudioPreparedEvent;
+import com.mingke.newmoduo.util.AudioRecorder;
 import com.mingke.newmoduo.view.adapter.MsgBean;
 
 import de.greenrobot.event.EventBus;
@@ -22,7 +23,7 @@ public class RecordButton extends Button {
     //dialog管理器
     private DialogManager mDialogManager;
     //音频管理器
-    private AudioManager mAudioManager;
+    private AudioRecorder mAudioRecorder;
 
     //手指按下的时间
     private long touchDownTime;
@@ -46,7 +47,7 @@ public class RecordButton extends Button {
 
     private void initView() {
         mDialogManager = new DialogManager(getContext());
-        mAudioManager = AudioManager.getmInstance();
+        mAudioRecorder = AudioRecorder.getmInstance();
     }
 
     /**
@@ -75,15 +76,17 @@ public class RecordButton extends Button {
                 break;
             case STATE_RECORDING:
                 setText(R.string.str_record_recording);
-                if (mAudioManager.isPrepared()) {
+                if (mAudioRecorder.isPrepared()) {
                     mDialogManager.showRecordingDialog();
                 }
                 setBackgroundResource(R.drawable.btn_record_recording);
                 break;
             case STATE_WANT_CANCEL:
-                setText(R.string.str_record_want_cancel);
-                setBackgroundResource(R.drawable.btn_record_recording);
-                mDialogManager.showWantCancelDialog();
+                if (mAudioRecorder.isPrepared()) {
+                    setText(R.string.str_record_want_cancel);
+                    setBackgroundResource(R.drawable.btn_record_recording);
+                    mDialogManager.showWantCancelDialog();
+                }
                 break;
         }
     }
@@ -96,7 +99,7 @@ public class RecordButton extends Button {
         switch (action) {
             case MotionEvent.ACTION_DOWN:
                 //手指摸下时就开始准备录音
-                mAudioManager.prepareAudio();
+                mAudioRecorder.prepareAudio();
                 touchDownTime = System.currentTimeMillis();
                 changeState(State.STATE_RECORDING);
                 break;
@@ -110,17 +113,17 @@ public class RecordButton extends Button {
             case MotionEvent.ACTION_UP:
                 changeState(State.STATE_NORMAL);
                 if (isWantCancel(x, y)) {
-                    mAudioManager.cancel();
+                    mAudioRecorder.cancel();
                 } else {
                     if ((System.currentTimeMillis() - touchDownTime) < 500) {
-                        mAudioManager.cancel();
+                        mAudioRecorder.cancel();
                         Toast.makeText(getContext(), "多说几句吧", Toast.LENGTH_SHORT);
                     } else {
-                        mAudioManager.release();
+                        mAudioRecorder.release();
                         //添加一条消息
                         Timber.e("发出添加msg的event");
                         EventBus.getDefault().post(MsgBean.getInstance(MsgBean.TYPE_USER_AUDIO,
-                                MsgBean.STATE_SENDING, mAudioManager.getmCurrentFilePath()));
+                                MsgBean.STATE_SENDING, mAudioRecorder.getmCurrentFilePath()));
                     }
                 }
                 break;

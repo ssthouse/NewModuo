@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.mingke.newmoduo.R;
-import com.mingke.newmoduo.util.AudioHelper;
+import com.mingke.newmoduo.util.AudioPlayer;
 
 /**
  * 用在xml里面
@@ -46,12 +46,12 @@ public class AudioPlayButton extends TextView {
                 }
                 if(currentState == State.STATE_NORMAL){
                     //尝试播放
-                    AudioHelper.getInstance(getContext()).playAudio(audioFilePath, AudioPlayButton.this);
+                    AudioPlayer.getInstance(getContext()).playAudio(audioFilePath, AudioPlayButton.this);
                     //切换为播放状态
                     currentState = State.STATE_PLAYING;
                 }else if (currentState == State.STATE_PLAYING){
                     //暂停
-                    AudioHelper.getInstance(getContext()).pausePlayer();
+                    AudioPlayer.getInstance(getContext()).pausePlayer();
                 }
             }
         });
