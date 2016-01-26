@@ -6,7 +6,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.mingke.newmoduo.R;
-import com.mingke.newmoduo.util.AudioPlayer;
+import com.mingke.newmoduo.control.util.AudioPlayer;
 
 /**
  * 用在xml里面

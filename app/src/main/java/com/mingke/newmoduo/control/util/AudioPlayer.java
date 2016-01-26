@@ -1,4 +1,4 @@
-package com.mingke.newmoduo.util;
+package com.mingke.newmoduo.control.util;
 
 import android.content.Context;
 import android.media.AudioManager;
@@ -84,8 +84,6 @@ public class AudioPlayer {
             mMediaPlayer.start();
         }
     }
-
-
 
     //getter---------------------setter-------------------------------
     public static AudioPlayer getmInstance() {

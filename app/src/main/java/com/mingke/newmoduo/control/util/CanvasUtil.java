@@ -1,4 +1,4 @@
-package com.mingke.newmoduo.util;
+package com.mingke.newmoduo.control.util;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;

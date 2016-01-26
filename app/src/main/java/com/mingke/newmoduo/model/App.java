@@ -3,6 +3,8 @@ package com.mingke.newmoduo.model;
 import android.app.Application;
 
 import com.activeandroid.ActiveAndroid;
+import com.iflytek.cloud.SpeechConstant;
+import com.iflytek.cloud.SpeechUtility;
 
 import timber.log.Timber;
 
@@ -16,5 +18,7 @@ public class App extends Application {
         super.onCreate();
         Timber.plant(new Timber.DebugTree());
         ActiveAndroid.initialize(this);
+        //讯飞
+        SpeechUtility.createUtility(this, SpeechConstant.APPID +"=56a6efef");
     }
 }

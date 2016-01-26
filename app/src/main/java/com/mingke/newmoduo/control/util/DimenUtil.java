@@ -1,4 +1,4 @@
-package com.mingke.newmoduo.util;
+package com.mingke.newmoduo.control.util;
 
 import android.content.Context;
 import android.util.TypedValue;

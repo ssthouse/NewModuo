@@ -1,4 +1,4 @@
-package com.mingke.newmoduo.util;
+package com.mingke.newmoduo.control.util;
 
 import android.media.MediaRecorder;
 import android.os.Environment;

@@ -12,15 +12,14 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 
 import com.github.florent37.viewanimator.ViewAnimator;
 import com.mingke.newmoduo.R;
+import com.mingke.newmoduo.control.util.DimenUtil;
 import com.mingke.newmoduo.model.event.ModuoBigEvent;
-import com.mingke.newmoduo.util.DimenUtil;
 import com.mingke.newmoduo.view.adapter.MainAdapter;
 import com.mingke.newmoduo.view.adapter.MsgBean;
 import com.mingke.newmoduo.view.widget.ModuoView;
 import com.mingke.newmoduo.view.widget.record.RecordButton;
 
 import de.greenrobot.event.EventBus;
-import timber.log.Timber;
 
 /**
  * 魔哆主界面
@@ -51,8 +50,6 @@ public class ModuoFragment extends Fragment {
     private void initDimens() {
         bigModuoHeight = moduoView.getHeight();
         smallModuoHeight = DimenUtil.dp2px(getContext(), 100);
-        Timber.e(moduoView.getHeight() + "                我魔哆就这么高");
-        Timber.e("big:  " + bigModuoHeight + "    small:   " + smallModuoHeight);
     }
 
     private void initView(View rootView) {

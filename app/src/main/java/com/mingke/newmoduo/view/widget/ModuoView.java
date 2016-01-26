@@ -9,8 +9,8 @@ import android.view.View;
 
 import com.mingke.newmoduo.R;
 import com.mingke.newmoduo.model.event.ModuoBigEvent;
-import com.mingke.newmoduo.util.CanvasUtil;
-import com.mingke.newmoduo.util.DimenUtil;
+import com.mingke.newmoduo.control.util.CanvasUtil;
+import com.mingke.newmoduo.control.util.DimenUtil;
 
 import de.greenrobot.event.EventBus;
 
