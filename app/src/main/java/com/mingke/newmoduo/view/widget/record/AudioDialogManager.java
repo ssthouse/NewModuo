@@ -9,6 +9,8 @@ import android.widget.LinearLayout;
 
 import com.mingke.newmoduo.R;
 
+import timber.log.Timber;
+
 /**
  * 语音按钮Dialog管理类
  * Created by ssthouse on 2016/1/24.
@@ -22,6 +24,9 @@ public class AudioDialogManager {
     private LinearLayout llWantCancel;
     private LinearLayout llTooShort;
 
+    //当前dialog显示的声音大小
+    private int currentVolumeLevel;
+
     public AudioDialogManager(Context mContext) {
         this.mContext = mContext;
         mDialog = new Dialog(mContext, R.style.RecordDialog);
@@ -34,25 +39,31 @@ public class AudioDialogManager {
         llTooShort = (LinearLayout) mDialog.findViewById(R.id.id_ll_too_short);
     }
 
-    /**
-     * 显示正在说话Dialog
-     * 需要显示音量
-     *
-     * @param volumeLevel
-     */
-    public void showRecordingDialog(int volumeLevel) {
+    //显示正在说话Dialog
+    public void showRecordingDialog() {
         llRecording.setVisibility(View.VISIBLE);
         llWantCancel.setVisibility(View.GONE);
         llTooShort.setVisibility(View.GONE);
+        mDialog.show();
+    }
+
+    //更新音量显示
+    public void updateVolumeLevel(int volumeLevel) {
+        if (currentVolumeLevel == volumeLevel || volumeLevel>7) {
+            return;
+        }
+        //更新当前显示的音量
+        currentVolumeLevel = volumeLevel;
         //改变音量View
         ImageView ivColumnLevel = (ImageView) llRecording.findViewById(R.id.id_iv_volume_level);
         int id = mContext.getResources().getIdentifier("ic_v" + volumeLevel, "drawable", "com.mingke.newmoduo");
         if (id > 0) {
             ivColumnLevel.setImageResource(id);
         }
-        mDialog.show();
+        Timber.e("更新音量View");
     }
 
+    //想要取消Dialog
     public void showWantCancelDialog() {
         llRecording.setVisibility(View.GONE);
         llWantCancel.setVisibility(View.VISIBLE);
@@ -60,6 +71,7 @@ public class AudioDialogManager {
         mDialog.show();
     }
 
+    //时间太短Dialog
     public void showTooSHort() {
         llRecording.setVisibility(View.GONE);
         llWantCancel.setVisibility(View.GONE);

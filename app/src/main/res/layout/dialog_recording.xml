@@ -9,6 +9,7 @@
 
     <!--正在说话-->
     <LinearLayout
+        android:id="@+id/id_ll_recording"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -16,7 +17,6 @@
         android:visibility="visible">
 
         <LinearLayout
-            android:id="@+id/id_ll_recording"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"

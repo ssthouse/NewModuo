@@ -13,6 +13,7 @@ import com.mingke.newmoduo.model.event.VolumeChangEvent;
 import com.mingke.newmoduo.view.adapter.MsgBean;
 
 import de.greenrobot.event.EventBus;
+import timber.log.Timber;
 
 /**
  * 录音按钮
@@ -62,8 +63,10 @@ public class RecordButton extends Button {
 
     //音量变化事件
     public void onEventMainThread(VolumeChangEvent event){
+        Timber.e("收到音量变化事件");
         if(currentState == State.STATE_RECORDING) {
-            mAudioDialogManager.showRecordingDialog(mSpeechManager.getVolumeLevel(7));
+            Timber.e("尝试变化音量...............................................");
+            mAudioDialogManager.updateVolumeLevel(mSpeechManager.getVolumeLevel(7));
         }
     }
 
@@ -82,7 +85,7 @@ public class RecordButton extends Button {
                 break;
             case STATE_RECORDING:
                 setText(R.string.str_record_recording);
-                mAudioDialogManager.showRecordingDialog(mSpeechManager.getVolumeLevel(7));
+                mAudioDialogManager.showRecordingDialog();
                 setBackgroundResource(R.drawable.btn_record_recording);
                 break;
             case STATE_WANT_CANCEL:
