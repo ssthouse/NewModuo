@@ -9,7 +9,6 @@ import android.widget.Toast;
 import com.mingke.newmoduo.R;
 import com.mingke.newmoduo.control.sound.SpeechManager;
 import com.mingke.newmoduo.model.event.AudioPreparedEvent;
-import com.mingke.newmoduo.control.util.AudioRecorder;
 import com.mingke.newmoduo.view.adapter.MsgBean;
 
 import de.greenrobot.event.EventBus;
@@ -22,9 +21,6 @@ public class RecordButton extends Button {
 
     //dialog管理器
     private DialogManager mDialogManager;
-    //音频管理器
-    private AudioRecorder mAudioRecorder;
-
     //语音管理器
     private SpeechManager mSpeechManager;
 
@@ -50,7 +46,6 @@ public class RecordButton extends Button {
 
     private void initView() {
         mDialogManager = new DialogManager(getContext());
-        mAudioRecorder = AudioRecorder.getmInstance();
         mSpeechManager = SpeechManager.getInstance(getContext());
     }
 
@@ -80,17 +75,13 @@ public class RecordButton extends Button {
                 break;
             case STATE_RECORDING:
                 setText(R.string.str_record_recording);
-//                if (mAudioRecorder.isPrepared()) {
                 mDialogManager.showRecordingDialog();
-//                }
                 setBackgroundResource(R.drawable.btn_record_recording);
                 break;
             case STATE_WANT_CANCEL:
-//                if (mAudioRecorder.isPrepared()) {
                 setText(R.string.str_record_want_cancel);
                 setBackgroundResource(R.drawable.btn_record_recording);
                 mDialogManager.showWantCancelDialog();
-//                }
                 break;
         }
     }
@@ -118,15 +109,12 @@ public class RecordButton extends Button {
             case MotionEvent.ACTION_UP:
                 changeState(State.STATE_NORMAL);
                 if (isWantCancel(x, y)) {
-//                    mAudioRecorder.cancel();
                     mSpeechManager.cancelSpeech();
                 } else {
                     if ((System.currentTimeMillis() - touchDownTime) < 500) {
-//                        mAudioRecorder.cancel();
                         mSpeechManager.cancelSpeech();
                         Toast.makeText(getContext(), "多说几句吧", Toast.LENGTH_SHORT).show();
                     } else {
-//                        mAudioRecorder.release();
                         mSpeechManager.stopSpeech();
                         //添加一条消息
                         EventBus.getDefault().post(MsgBean.getInstance(MsgBean.TYPE_USER_AUDIO,

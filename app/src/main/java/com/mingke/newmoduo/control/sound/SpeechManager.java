@@ -17,6 +17,7 @@ import timber.log.Timber;
 
 /**
  * 语音管理类:
+ * 初始不说话2s---结尾不说话10s
  * <p/>
  * Created by ssthouse on 2016/1/26.
  */
@@ -53,9 +54,9 @@ public class SpeechManager implements ISpeechControl {
         mSpeechUnderstander = SpeechUnderstander.createUnderstander(mContext, mSpeechUdrInitListener);
         mSpeechUnderstander.setParameter(SpeechConstant.LANGUAGE, "zh_cn");
         // 设置语音前端点:静音超时时间，即用户多长时间不说话则当做超时处理
-        mSpeechUnderstander.setParameter(SpeechConstant.VAD_BOS, "4000");
+        mSpeechUnderstander.setParameter(SpeechConstant.VAD_BOS, "10000");
         // 设置语音后端点:后端点静音检测时间，即用户停止说话多长时间内即认为不再输入， 自动停止录音
-        mSpeechUnderstander.setParameter(SpeechConstant.VAD_EOS, "1000");
+        mSpeechUnderstander.setParameter(SpeechConstant.VAD_EOS, "2000");
         // 设置标点符号，默认：1（有标点）
         mSpeechUnderstander.setParameter(SpeechConstant.ASR_PTT, "1");
         // 注：AUDIO_FORMAT参数语记需要更新版本才能生效
