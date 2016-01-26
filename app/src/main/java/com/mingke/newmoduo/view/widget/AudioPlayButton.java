@@ -19,7 +19,10 @@ public class AudioPlayButton extends TextView {
     private String audioFilePath;
     private State currentState;
 
-    enum State{
+    //是不是魔哆说的
+    private boolean isFromModuo;
+
+    enum State {
         STATE_NORMAL, STATE_PLAYING
     }
 
@@ -36,20 +39,24 @@ public class AudioPlayButton extends TextView {
         currentState = State.STATE_NORMAL;
 
         //背景图片
-        setBackgroundResource(R.drawable.adj);
+        if (isFromModuo) {
+            setBackgroundResource(R.drawable.ic_chat_voice_left);
+        } else {
+            setBackgroundResource(R.drawable.ic_chat_voice_right);
+        }
 
         setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(audioFilePath == null){
+                if (audioFilePath == null) {
                     return;
                 }
-                if(currentState == State.STATE_NORMAL){
+                if (currentState == State.STATE_NORMAL) {
                     //尝试播放
                     AudioPlayer.getInstance(getContext()).playAudio(audioFilePath, AudioPlayButton.this);
                     //切换为播放状态
                     currentState = State.STATE_PLAYING;
-                }else if (currentState == State.STATE_PLAYING){
+                } else if (currentState == State.STATE_PLAYING) {
                     //暂停
                     AudioPlayer.getInstance(getContext()).pausePlayer();
                 }
@@ -57,11 +64,28 @@ public class AudioPlayButton extends TextView {
         });
     }
 
+    //getter---------------setter-----------------------------------------------
     public String getAudioFilePath() {
         return audioFilePath;
     }
 
     public void setAudioFilePath(String audioFilePath) {
         this.audioFilePath = audioFilePath;
+    }
+
+    public State getCurrentState() {
+        return currentState;
+    }
+
+    public void setCurrentState(State currentState) {
+        this.currentState = currentState;
+    }
+
+    public boolean isFromModuo() {
+        return isFromModuo;
+    }
+
+    public void setFromModuo(boolean fromModuo) {
+        isFromModuo = fromModuo;
     }
 }

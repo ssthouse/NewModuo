@@ -17,8 +17,6 @@ import com.mingke.newmoduo.view.widget.AudioPlayButton;
 import java.util.ArrayList;
 import java.util.List;
 
-import timber.log.Timber;
-
 /**
  * 魔哆聊天adapter
  * Created by ssthouse on 2016/1/24.
@@ -56,25 +54,53 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.Holder> {
     @Override
     public void onBindViewHolder(Holder holder, int position) {
         //UI填充
-        switch (msgList.get(position).getMsgType()){
+        switch (msgList.get(position).getMsgType()) {
             case MsgBean.TYPE_MODUO_TEXT:
+                bindTextMsg(holder, position);
                 break;
             case MsgBean.TYPE_MODUO_AUDIO:
+                bindAudioMsg(holder, position);
                 break;
             case MsgBean.TYPE_MODUO_IMAGE:
                 break;
             case MsgBean.TYPE_USER_TEXT:
+                bindTextMsg(holder, position);
                 break;
             case MsgBean.TYPE_USER_AUDIO:
-                Timber.e("填充用户语音播放按钮");
-                //添加语音播放按钮
-                AudioPlayButton audioPlayButton = new AudioPlayButton(mContext);
-                audioPlayButton.setAudioFilePath(msgList.get(position).getAudioFilePath());
-                holder.conventLayout.removeAllViews();
-                holder.conventLayout.addView(audioPlayButton);
+                bindAudioMsg(holder, position);
                 break;
             case MsgBean.TYPE_USER_IMAGE:
+                break;
         }
+    }
+
+    //填充AudioMsg到view
+    private void bindAudioMsg(Holder holder, int position) {
+        holder.conventLayout.removeAllViews();
+        //添加语音播放按钮
+        View contentView;
+        if (msgList.get(position).isFromModuo()) {
+            contentView = View.inflate(mContext, R.layout.view_chat_item_left_audio_layout, null);
+        } else {
+            contentView = View.inflate(mContext, R.layout.view_chat_item_right_audio_layout, null);
+        }
+        AudioPlayButton playButton;
+        playButton = (AudioPlayButton) contentView.findViewById(R.id.id_btn_audio_play);
+        playButton.setAudioFilePath(msgList.get(position).getAudioFilePath());
+        playButton.setFromModuo(msgList.get(position).isFromModuo());
+        holder.conventLayout.addView(contentView);
+    }
+
+    //填充TextMsg到View
+    private void bindTextMsg(Holder holder, int position) {
+        holder.conventLayout.removeAllViews();
+        if (msgList.get(position).isFromModuo()) {
+            holder.conventLayout.addView(View.inflate(mContext, R.layout.view_chat_item_left_text_layout, null));
+        } else {
+            holder.conventLayout.addView(View.inflate(mContext, R.layout.view_chat_item_right_text_layout, null));
+        }
+        TextView tv = (TextView) holder.conventLayout.findViewById(R.id.id_tv_chat_content);
+        tv.setText(msgList.get(position).getText());
     }
 
     @Override
