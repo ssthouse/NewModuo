@@ -4,14 +4,16 @@ import android.app.Dialog;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.mingke.newmoduo.R;
 
 /**
+ * 语音按钮Dialog管理类
  * Created by ssthouse on 2016/1/24.
  */
-public class DialogManager {
+public class AudioDialogManager {
 
     private Context mContext;
 
@@ -20,7 +22,7 @@ public class DialogManager {
     private LinearLayout llWantCancel;
     private LinearLayout llTooShort;
 
-    public DialogManager(Context mContext) {
+    public AudioDialogManager(Context mContext) {
         this.mContext = mContext;
         mDialog = new Dialog(mContext, R.style.RecordDialog);
         LayoutInflater inflater = LayoutInflater.from(mContext);
@@ -32,11 +34,22 @@ public class DialogManager {
         llTooShort = (LinearLayout) mDialog.findViewById(R.id.id_ll_too_short);
     }
 
-
-    public void showRecordingDialog() {
+    /**
+     * 显示正在说话Dialog
+     * 需要显示音量
+     *
+     * @param volumeLevel
+     */
+    public void showRecordingDialog(int volumeLevel) {
         llRecording.setVisibility(View.VISIBLE);
         llWantCancel.setVisibility(View.GONE);
         llTooShort.setVisibility(View.GONE);
+        //改变音量View
+        ImageView ivColumnLevel = (ImageView) llRecording.findViewById(R.id.id_iv_volume_level);
+        int id = mContext.getResources().getIdentifier("ic_v" + volumeLevel, "drawable", "com.mingke.newmoduo");
+        if (id > 0) {
+            ivColumnLevel.setImageResource(id);
+        }
         mDialog.show();
     }
 

@@ -7,11 +7,13 @@
     android:orientation="vertical"
     android:padding="20dp">
 
+    <!--正在说话-->
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="visible">
 
         <LinearLayout
             android:id="@+id/id_ll_recording"
@@ -28,11 +30,12 @@
                 android:src="@drawable/recorder" />
 
             <ImageView
+                android:id="@+id/id_iv_volume_level"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:src="@drawable/v1" />
+                android:src="@drawable/ic_v1" />
         </LinearLayout>
 
         <TextView
@@ -43,6 +46,7 @@
             android:textColor="@color/white" />
     </LinearLayout>
 
+    <!--上滑取消-->
     <LinearLayout
         android:id="@+id/id_ll_want_cancel"
         android:layout_width="wrap_content"
@@ -54,13 +58,14 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_action_backspace" />
+            android:src="@drawable/ic_speech_cancel" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:text="@string/str_record_want_cancel" />
+            android:text="@string/str_record_want_cancel"
+            android:textColor="@color/white" />
 
     </LinearLayout>
 
@@ -80,7 +85,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/str_record_too_short" />
+            android:text="@string/str_record_too_short"
+            android:textColor="@color/white" />
     </LinearLayout>
 
 </LinearLayout>

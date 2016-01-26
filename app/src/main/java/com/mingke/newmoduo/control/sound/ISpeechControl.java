@@ -18,6 +18,9 @@ public interface ISpeechControl {
     //获取当前录音文件路径
     String getCurrentFilePath();
 
+    //获取音量大小
+    int getVolumeLevel(int maxLevel);
+
     //清除资源
     void destory();
 }

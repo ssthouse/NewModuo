@@ -12,7 +12,9 @@ import com.iflytek.cloud.SpeechError;
 import com.iflytek.cloud.SpeechUnderstander;
 import com.iflytek.cloud.SpeechUnderstanderListener;
 import com.iflytek.cloud.UnderstanderResult;
+import com.mingke.newmoduo.model.event.VolumeChangEvent;
 
+import de.greenrobot.event.EventBus;
 import timber.log.Timber;
 
 /**
@@ -98,6 +100,11 @@ public class SpeechManager implements ISpeechControl {
         return mCurrentFilePath;
     }
 
+    @Override
+    public int getVolumeLevel(int maxLevel) {
+        return (int) (1.0f * volumnLevel / 30 * maxLevel);
+    }
+
     // 退出时释放连接
     @Override
     public void destory() {
@@ -139,9 +146,12 @@ public class SpeechManager implements ISpeechControl {
 
         @Override
         public void onVolumeChanged(int volume, byte[] data) {
-//            Timber.e("当前正在说话，音量大小：" + volume);
-            //0-30
+            if(volumnLevel == volume){
+                return;
+            }
             volumnLevel = volume;
+            //抛出声音变化
+            EventBus.getDefault().post(new VolumeChangEvent(volume));
         }
 
         @Override

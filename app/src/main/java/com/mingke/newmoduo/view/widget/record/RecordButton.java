@@ -9,6 +9,7 @@ import android.widget.Toast;
 import com.mingke.newmoduo.R;
 import com.mingke.newmoduo.control.sound.SpeechManager;
 import com.mingke.newmoduo.model.event.AudioPreparedEvent;
+import com.mingke.newmoduo.model.event.VolumeChangEvent;
 import com.mingke.newmoduo.view.adapter.MsgBean;
 
 import de.greenrobot.event.EventBus;
@@ -20,7 +21,7 @@ import de.greenrobot.event.EventBus;
 public class RecordButton extends Button {
 
     //dialog管理器
-    private DialogManager mDialogManager;
+    private AudioDialogManager mAudioDialogManager;
     //语音管理器
     private SpeechManager mSpeechManager;
 
@@ -45,7 +46,7 @@ public class RecordButton extends Button {
     }
 
     private void initView() {
-        mDialogManager = new DialogManager(getContext());
+        mAudioDialogManager = new AudioDialogManager(getContext());
         mSpeechManager = SpeechManager.getInstance(getContext());
     }
 
@@ -59,6 +60,12 @@ public class RecordButton extends Button {
         changeState(State.STATE_RECORDING);
     }
 
+    //音量变化事件
+    public void onEventMainThread(VolumeChangEvent event){
+        if(currentState == State.STATE_RECORDING) {
+            mAudioDialogManager.showRecordingDialog(mSpeechManager.getVolumeLevel(7));
+        }
+    }
 
     //改变按钮状态
     public void changeState(State newState) {
@@ -71,17 +78,17 @@ public class RecordButton extends Button {
             case STATE_NORMAL:
                 setText(R.string.str_record_normal);
                 setBackgroundResource(R.drawable.btn_record_normal);
-                mDialogManager.dismiss();
+                mAudioDialogManager.dismiss();
                 break;
             case STATE_RECORDING:
                 setText(R.string.str_record_recording);
-                mDialogManager.showRecordingDialog();
+                mAudioDialogManager.showRecordingDialog(mSpeechManager.getVolumeLevel(7));
                 setBackgroundResource(R.drawable.btn_record_recording);
                 break;
             case STATE_WANT_CANCEL:
                 setText(R.string.str_record_want_cancel);
                 setBackgroundResource(R.drawable.btn_record_recording);
-                mDialogManager.showWantCancelDialog();
+                mAudioDialogManager.showWantCancelDialog();
                 break;
         }
     }
@@ -93,10 +100,11 @@ public class RecordButton extends Button {
         int y = (int) event.getY();
         switch (action) {
             case MotionEvent.ACTION_DOWN:
-                //手指摸下时就开始准备录音
-//                mAudioRecorder.prepareAudio();
+                //开始录音
                 mSpeechManager.startSpeech();
+                //记下时间戳
                 touchDownTime = System.currentTimeMillis();
+                //转为录音状态
                 changeState(State.STATE_RECORDING);
                 break;
             case MotionEvent.ACTION_MOVE:
