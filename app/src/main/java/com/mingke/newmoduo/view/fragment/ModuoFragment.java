@@ -129,7 +129,6 @@ public class ModuoFragment extends Fragment {
         //魔哆变小
         animateToSmall();
         //添加数据到对话框
-        Timber.e("添加msg回调");
         mAdapter.addMsg(msgBean);
     }
 

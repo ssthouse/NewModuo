@@ -6,8 +6,6 @@
     android:orientation="vertical"
     tools:context=".view.activity.MainActivity">
 
-    <include layout="@layout/toolbar" />
-
     <LinearLayout
         android:id="@+id/id_fragment_container"
         android:layout_width="match_parent"

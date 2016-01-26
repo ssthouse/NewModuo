@@ -12,7 +12,6 @@ import com.mingke.newmoduo.util.AudioRecorder;
 import com.mingke.newmoduo.view.adapter.MsgBean;
 
 import de.greenrobot.event.EventBus;
-import timber.log.Timber;
 
 /**
  * 录音按钮
@@ -121,7 +120,6 @@ public class RecordButton extends Button {
                     } else {
                         mAudioRecorder.release();
                         //添加一条消息
-                        Timber.e("发出添加msg的event");
                         EventBus.getDefault().post(MsgBean.getInstance(MsgBean.TYPE_USER_AUDIO,
                                 MsgBean.STATE_SENDING, mAudioRecorder.getmCurrentFilePath()));
                     }

@@ -3,7 +3,6 @@ package com.mingke.newmoduo.view.activity;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 
 import com.mingke.newmoduo.R;
 import com.mingke.newmoduo.view.fragment.ModuoFragment;
@@ -32,7 +31,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        setSupportActionBar((Toolbar) findViewById(R.id.id_tb));
     }
 
 }

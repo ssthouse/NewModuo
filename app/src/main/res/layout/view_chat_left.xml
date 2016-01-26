@@ -15,7 +15,8 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="3dp"
         android:layout_marginTop="10dp"
-        android:gravity="center" />
+        android:gravity="center"
+        android:visibility="gone" />
 
     <RelativeLayout
         android:layout_width="match_parent"

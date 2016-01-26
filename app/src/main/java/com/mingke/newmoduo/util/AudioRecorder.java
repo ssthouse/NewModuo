@@ -63,7 +63,6 @@ public class AudioRecorder {
             mMediaRecorder.start();
             isPrepared = true;
             //准备完毕
-            Timber.e("准备完毕");
             EventBus.getDefault().post(new AudioPreparedEvent());
         } catch (IOException e) {
             e.printStackTrace();
