@@ -21,6 +21,9 @@ public interface ISpeechControl {
     //获取音量大小
     int getVolumeLevel(int maxLevel);
 
+    //当前录音文件是否存在
+    boolean isCurrentAudioFileExit();
+
     //清除资源
     void destory();
 }

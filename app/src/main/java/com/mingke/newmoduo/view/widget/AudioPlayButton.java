@@ -3,7 +3,6 @@ package com.mingke.newmoduo.view.widget;
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
 import android.util.AttributeSet;
-import android.view.View;
 import android.widget.TextView;
 
 import com.mingke.newmoduo.R;
@@ -38,30 +37,28 @@ public class AudioPlayButton extends TextView implements IAudioPlayBtnControl {
 
     private void init() {
         currentState = State.STATE_NORMAL;
-
         //背景图片
         stopAnim();
+    }
 
-        setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (audioFilePath == null) {
-                    return;
-                }
-                if (currentState == State.STATE_NORMAL) {
-                    //尝试播放
-                    AudioPlayer.getInstance(getContext()).playAudio(audioFilePath, AudioPlayButton.this);
-                    //切换为播放状态
-                    currentState = State.STATE_PLAYING;
-                    //播放动画
-                    playAnim();
-                } else if (currentState == State.STATE_PLAYING) {
-                    //暂停
-                    AudioPlayer.getInstance(getContext()).pausePlayer();
-                    stopAnim();
-                }
-            }
-        });
+    @Override
+    public void onClick() {
+        if (audioFilePath == null) {
+            return;
+        }
+        if (currentState == State.STATE_NORMAL) {
+            //切换为播放状态
+            currentState = State.STATE_PLAYING;
+            //尝试播放
+            AudioPlayer.getInstance(getContext()).playAudio(audioFilePath, AudioPlayButton.this);
+            //播放动画
+            playAnim();
+        } else if (currentState == State.STATE_PLAYING) {
+            currentState = State.STATE_NORMAL;
+            //暂停
+            AudioPlayer.getInstance(getContext()).pausePlayer();
+            stopAnim();
+        }
     }
 
 
@@ -81,6 +78,7 @@ public class AudioPlayButton extends TextView implements IAudioPlayBtnControl {
 
     @Override
     public void stopAnim() {
+        currentState = State.STATE_NORMAL;
         //背景图片
         if (isFromModuo) {
             setBackgroundResource(R.drawable.ic_chat_voice_left);

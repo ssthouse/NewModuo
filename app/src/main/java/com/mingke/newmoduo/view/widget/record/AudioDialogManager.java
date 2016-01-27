@@ -9,8 +9,6 @@ import android.widget.LinearLayout;
 
 import com.mingke.newmoduo.R;
 
-import timber.log.Timber;
-
 /**
  * 语音按钮Dialog管理类
  * Created by ssthouse on 2016/1/24.
@@ -49,7 +47,7 @@ public class AudioDialogManager {
 
     //更新音量显示
     public void updateVolumeLevel(int volumeLevel) {
-        if (currentVolumeLevel == volumeLevel || volumeLevel>7) {
+        if (currentVolumeLevel == volumeLevel || volumeLevel > 7) {
             return;
         }
         //更新当前显示的音量
@@ -60,7 +58,6 @@ public class AudioDialogManager {
         if (id > 0) {
             ivColumnLevel.setImageResource(id);
         }
-        Timber.e("更新音量View");
     }
 
     //想要取消Dialog

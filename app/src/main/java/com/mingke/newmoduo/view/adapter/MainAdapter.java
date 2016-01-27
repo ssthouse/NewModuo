@@ -1,6 +1,8 @@
 package com.mingke.newmoduo.view.adapter;
 
 import android.content.Context;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,8 +16,11 @@ import android.widget.TextView;
 import com.mingke.newmoduo.R;
 import com.mingke.newmoduo.view.widget.AudioPlayButton;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+
+import timber.log.Timber;
 
 /**
  * 魔哆聊天adapter
@@ -84,10 +89,25 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.Holder> {
         } else {
             contentView = View.inflate(mContext, R.layout.view_chat_item_right_audio_layout, null);
         }
-        AudioPlayButton playButton;
-        playButton = (AudioPlayButton) contentView.findViewById(R.id.id_btn_audio_play);
+        //填充音频播放按钮
+        final AudioPlayButton playButton = (AudioPlayButton) contentView.findViewById(R.id.id_btn_audio_play);
         playButton.setAudioFilePath(msgList.get(position).getAudioFilePath());
         playButton.setFromModuo(msgList.get(position).isFromModuo());
+        //播放音频的点击事件
+        contentView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Timber.e("click!!!!!!!!!!!!!!!!");
+                playButton.onClick();
+            }
+        });
+        //填充音频时长
+        TextView tvAudioLength = (TextView) contentView.findViewById(R.id.id_tv_audio_length);
+        MediaPlayer mediaPlayer = MediaPlayer.create(mContext,
+                Uri.fromFile(new File(msgList.get(position).getAudioFilePath())));
+        if (mediaPlayer != null) {
+            tvAudioLength.setText(mediaPlayer.getDuration() / 1000 + "''");
+        }
         holder.conventLayout.addView(contentView);
     }
 

@@ -14,6 +14,8 @@ import com.iflytek.cloud.SpeechUnderstanderListener;
 import com.iflytek.cloud.UnderstanderResult;
 import com.mingke.newmoduo.model.event.VolumeChangEvent;
 
+import java.io.File;
+
 import de.greenrobot.event.EventBus;
 import timber.log.Timber;
 
@@ -105,6 +107,13 @@ public class SpeechManager implements ISpeechControl {
         return (int) (1.0f * volumeLevel / 30 * maxLevel);
     }
 
+    @Override
+    public boolean isCurrentAudioFileExit() {
+        File currentAudioFile = new File(mCurrentFilePath);
+        Timber.e("mCurrentFilePath:\t"+mCurrentFilePath + (currentAudioFile.exists()?"存在":"不存在"));
+        return currentAudioFile.exists();
+    }
+
     // 退出时释放连接
     @Override
     public void destory() {
@@ -146,7 +155,7 @@ public class SpeechManager implements ISpeechControl {
 
         @Override
         public void onVolumeChanged(int volume, byte[] data) {
-            if(volumeLevel == volume){
+            if (volumeLevel == volume) {
                 return;
             }
             volumeLevel = volume;

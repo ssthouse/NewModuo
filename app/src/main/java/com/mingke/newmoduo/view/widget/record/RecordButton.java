@@ -13,7 +13,6 @@ import com.mingke.newmoduo.model.event.VolumeChangEvent;
 import com.mingke.newmoduo.view.adapter.MsgBean;
 
 import de.greenrobot.event.EventBus;
-import timber.log.Timber;
 
 /**
  * 录音按钮
@@ -62,10 +61,8 @@ public class RecordButton extends Button {
     }
 
     //音量变化事件
-    public void onEventMainThread(VolumeChangEvent event){
-        Timber.e("收到音量变化事件");
-        if(currentState == State.STATE_RECORDING) {
-            Timber.e("尝试变化音量...............................................");
+    public void onEventMainThread(VolumeChangEvent event) {
+        if (currentState == State.STATE_RECORDING) {
             mAudioDialogManager.updateVolumeLevel(mSpeechManager.getVolumeLevel(7));
         }
     }
@@ -127,9 +124,13 @@ public class RecordButton extends Button {
                         Toast.makeText(getContext(), "多说几句吧", Toast.LENGTH_SHORT).show();
                     } else {
                         mSpeechManager.stopSpeech();
-                        //添加一条消息
-                        EventBus.getDefault().post(MsgBean.getInstance(MsgBean.TYPE_USER_AUDIO,
-                                MsgBean.STATE_SENDING, mSpeechManager.getCurrentFilePath()));
+//                        if (mSpeechManager.isCurrentAudioFileExit()) {
+                            //添加一条消息
+                            EventBus.getDefault().post(MsgBean.getInstance(MsgBean.TYPE_USER_AUDIO,
+                                    MsgBean.STATE_SENDING, mSpeechManager.getCurrentFilePath()));
+//                        } else {
+//                            Toast.makeText(getContext(), "请说话", Toast.LENGTH_SHORT).show();
+//                        }
                     }
                 }
                 break;

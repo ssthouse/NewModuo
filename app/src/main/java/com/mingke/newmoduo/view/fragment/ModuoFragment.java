@@ -19,7 +19,10 @@ import com.mingke.newmoduo.view.adapter.MsgBean;
 import com.mingke.newmoduo.view.widget.ModuoView;
 import com.mingke.newmoduo.view.widget.record.RecordButton;
 
+import java.io.File;
+
 import de.greenrobot.event.EventBus;
+import timber.log.Timber;
 
 /**
  * 魔哆主界面
@@ -122,6 +125,14 @@ public class ModuoFragment extends Fragment {
     public void onEventMainThread(MsgBean msgBean) {
         if (msgBean == null) {
             return;
+        }
+        //音频文件是否为空
+        if(msgBean.getMsgType() == MsgBean.TYPE_MODUO_AUDIO || msgBean.getMsgType() == MsgBean.TYPE_USER_AUDIO){
+            File audioFile = new File(msgBean.getAudioFilePath());
+            if(!audioFile.exists()){
+                Timber.e("音频文件为空");
+//                return;
+            }
         }
         //魔哆变小
         animateToSmall();
