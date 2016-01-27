@@ -13,12 +13,20 @@ public class MsgBean extends Model{
 
     //映射到数据库
     public static final String TABLE_MSG = "Message";
+    //msg类型
     public static final String COLUMN_MSG_TYPE = "MsgType";
+    //msg状态
     public static final String COLUMN_MSG_STATE = "MsgState";
+    //文字
     public static final String COLUMN_TEXT = "Text";
+    //音频
     public static final String COLUMN_AUDIO_PATH = "AudioPath";
+    public static final String COLUMN_AUDIO_DURATION = "AudioDuration";
+    //图片
     public static final String COLUMN_IMAGE_PATH = "ImgPath";
+    //方向
     public static final String COLUMN_IS_FROM_MODUO = "IsModuo";
+    //发出事件
     public static final String COLUMN_TIME_STAMP = "TimeStamp";
 
     //消息类型枚
@@ -48,6 +56,8 @@ public class MsgBean extends Model{
     //音频数据
     @Column(name = COLUMN_AUDIO_PATH)
     private String audioFilePath;
+    @Column(name = COLUMN_AUDIO_DURATION)
+    private int audioDuration;
     //图片数据
     @Column(name = COLUMN_IMAGE_PATH)
     private String imgFilePath;
@@ -156,5 +166,13 @@ public class MsgBean extends Model{
 
     public void setTimeStamp(long timeStamp) {
         this.timeStamp = timeStamp;
+    }
+
+    public int getAudioDuration() {
+        return audioDuration;
+    }
+
+    public void setAudioDuration(int audioDuration) {
+        this.audioDuration = audioDuration;
     }
 }

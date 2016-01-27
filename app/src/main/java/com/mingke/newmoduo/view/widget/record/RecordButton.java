@@ -124,13 +124,12 @@ public class RecordButton extends Button {
                         Toast.makeText(getContext(), "多说几句吧", Toast.LENGTH_SHORT).show();
                     } else {
                         mSpeechManager.stopSpeech();
-//                        if (mSpeechManager.isCurrentAudioFileExit()) {
-                            //添加一条消息
-                            EventBus.getDefault().post(MsgBean.getInstance(MsgBean.TYPE_USER_AUDIO,
-                                    MsgBean.STATE_SENDING, mSpeechManager.getCurrentFilePath()));
-//                        } else {
-//                            Toast.makeText(getContext(), "请说话", Toast.LENGTH_SHORT).show();
-//                        }
+                        //添加一条消息
+                        MsgBean msgBean = MsgBean.getInstance(MsgBean.TYPE_USER_AUDIO,
+                                MsgBean.STATE_SENDING, mSpeechManager.getCurrentFilePath());
+                        //audio消息时长
+                        msgBean.setAudioDuration((int) ((System.currentTimeMillis()-touchDownTime)/1000));
+                        EventBus.getDefault().post(msgBean);
                     }
                 }
                 break;

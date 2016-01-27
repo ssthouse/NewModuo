@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.mingke.newmoduo.R;
 import com.mingke.newmoduo.control.util.AudioPlayer;
+import com.mingke.newmoduo.control.util.DimenUtil;
 
 /**
  * 用在xml里面
@@ -15,6 +16,8 @@ import com.mingke.newmoduo.control.util.AudioPlayer;
  * Created by ssthouse on 2016/1/25.
  */
 public class AudioPlayButton extends TextView implements IAudioPlayBtnControl {
+
+    private int MAX_MARGIN_LEFT;
 
     private String audioFilePath;
     private State currentState;
@@ -36,8 +39,10 @@ public class AudioPlayButton extends TextView implements IAudioPlayBtnControl {
     }
 
     private void init() {
+        //最大距离宽度
+        MAX_MARGIN_LEFT = DimenUtil.dp2px(getContext(), 100);
+        //初始状态
         currentState = State.STATE_NORMAL;
-        //背景图片
         stopAnim();
     }
 

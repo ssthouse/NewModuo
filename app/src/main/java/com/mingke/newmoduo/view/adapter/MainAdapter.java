@@ -1,8 +1,6 @@
 package com.mingke.newmoduo.view.adapter;
 
 import android.content.Context;
-import android.media.MediaPlayer;
-import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +14,6 @@ import android.widget.TextView;
 import com.mingke.newmoduo.R;
 import com.mingke.newmoduo.view.widget.AudioPlayButton;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -103,11 +100,7 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.Holder> {
         });
         //填充音频时长
         TextView tvAudioLength = (TextView) contentView.findViewById(R.id.id_tv_audio_length);
-        MediaPlayer mediaPlayer = MediaPlayer.create(mContext,
-                Uri.fromFile(new File(msgList.get(position).getAudioFilePath())));
-        if (mediaPlayer != null) {
-            tvAudioLength.setText(mediaPlayer.getDuration() / 1000 + "''");
-        }
+        tvAudioLength.setText(msgList.get(position).getAudioDuration() + "''");
         holder.conventLayout.addView(contentView);
     }
 
