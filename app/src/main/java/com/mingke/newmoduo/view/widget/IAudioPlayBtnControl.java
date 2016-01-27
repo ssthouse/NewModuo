@@ -14,4 +14,7 @@ public interface IAudioPlayBtnControl {
 
     //点击事件
     void onClick();
+
+    //更新View
+    void updateView();
 }

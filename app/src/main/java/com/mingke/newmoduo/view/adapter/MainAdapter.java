@@ -88,8 +88,8 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.Holder> {
         }
         //填充音频播放按钮
         final AudioPlayButton playButton = (AudioPlayButton) contentView.findViewById(R.id.id_btn_audio_play);
-        playButton.setAudioFilePath(msgList.get(position).getAudioFilePath());
-        playButton.setFromModuo(msgList.get(position).isFromModuo());
+        playButton.setAudioMsg(msgList.get(position));
+        playButton.updateView();
         //播放音频的点击事件
         contentView.setOnClickListener(new View.OnClickListener() {
             @Override
