@@ -8,9 +8,9 @@ import android.util.AttributeSet;
 import android.view.View;
 
 import com.mingke.newmoduo.R;
-import com.mingke.newmoduo.model.event.ModuoBigEvent;
 import com.mingke.newmoduo.control.util.CanvasUtil;
-import com.mingke.newmoduo.control.util.DimenUtil;
+import com.mingke.newmoduo.model.bean.ModuoRect;
+import com.mingke.newmoduo.model.event.ModuoBigEvent;
 
 import de.greenrobot.event.EventBus;
 
@@ -22,22 +22,10 @@ import de.greenrobot.event.EventBus;
  */
 public class ModuoView extends View implements View.OnClickListener {
 
-    //当前控件大小
-    private int currentWidth;
-    private int currentHeight;
-
-    //控件最小高度
-    private int minHeight;
-    private int maxHeight;
-
-    //按照宽度的倍数
-    private static final int SCALE_BIG = 2;
-    private static final int SCALE_SMALL = 8;
+    //当前魔哆位置
+    private ModuoRect moduoRect;
 
     private Bitmap bigModuo = BitmapFactory.decodeResource(getResources(), R.drawable.moduo);
-
-    //魔哆宽高
-    private int moduoWidth, moduoHeight;
 
     //当前状态---初始为大!
     private State currentState = State.STATE_BIG;
@@ -50,16 +38,16 @@ public class ModuoView extends View implements View.OnClickListener {
         this(context, null);
     }
 
-    public ModuoView(Context context, AttributeSet attrs) {
+    public ModuoView(final Context context, AttributeSet attrs) {
         super(context, attrs);
         setOnClickListener(this);
-        //初始化最小高度
-        minHeight = DimenUtil.dp2px(getContext(), 100);
         //获取最大高度
         post(new Runnable() {
             @Override
             public void run() {
-                maxHeight = getHeight();
+                //将魔哆范围管理类初始化
+                moduoRect = new ModuoRect(context, getWidth(), getHeight(), bigModuo);
+                invalidate();
             }
         });
     }
@@ -67,15 +55,17 @@ public class ModuoView extends View implements View.OnClickListener {
     @Override
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
-        //更新控件大小
-        currentWidth = w;
-        currentHeight = h;
-        //根据长宽切换模式
-        if (w < h) {
-            changeState(State.STATE_BIG);
-        } else {
-            changeState(State.STATE_SMALL);
+        //更新外部长宽
+        if (moduoRect != null) {
+            moduoRect.setOuter(w, h);
+            //根据长宽切换模式
+            if (w < h) {
+                changeState(State.STATE_BIG);
+            } else {
+                changeState(State.STATE_SMALL);
+            }
         }
+
     }
 
     @Override
@@ -105,7 +95,10 @@ public class ModuoView extends View implements View.OnClickListener {
      * 重绘
      */
     private void drawModuo(Canvas canvas) {
-        resetDimens();
+        if (moduoRect == null) {
+            return;
+        }
+//        Timber.e("正在画魔哆");
         switch (currentState) {
             case STATE_BIG:
                 drawBig(canvas);
@@ -116,26 +109,16 @@ public class ModuoView extends View implements View.OnClickListener {
         }
     }
 
-    //重新计算参数
-    private void resetDimens() {
-        if (bigModuo == null) {
-            return;
-        }
-        //当前控件宽高---主要用高度
-        currentWidth = getWidth();
-        currentHeight = getHeight();
-        float k = (float) (currentHeight - minHeight) / (maxHeight - minHeight);
-        float dividerNumber = 1.0f / SCALE_SMALL + (1.0f / SCALE_BIG - 1.0f / SCALE_SMALL) * k;
-        moduoWidth = (int) (currentWidth*dividerNumber);
-        moduoHeight = (int)(bigModuo.getHeight()/((float)bigModuo.getWidth()/moduoWidth));
-    }
-
     private void drawBig(Canvas canvas) {
-        CanvasUtil.drawBitmap(canvas, bigModuo, currentWidth / 2, currentHeight / 2, moduoWidth, moduoHeight);
+//        Timber.e("draw big");
+        CanvasUtil.drawBitmap(canvas, bigModuo, moduoRect.getOutWidth() / 2, moduoRect.getOutHeight() / 2,
+                moduoRect.getModuoWidth(), moduoRect.getModuoHeight());
     }
 
     private void drawSmall(Canvas canvas) {
-        CanvasUtil.drawBitmap(canvas, bigModuo, currentWidth / 2, currentHeight / 2, moduoWidth, moduoHeight);
+//        Timber.e("draw small");
+        CanvasUtil.drawBitmap(canvas, bigModuo, moduoRect.getOutWidth() / 2, moduoRect.getOutHeight() / 2,
+                moduoRect.getModuoWidth(), moduoRect.getModuoHeight());
     }
 
     public State getCurrentState() {
@@ -147,35 +130,4 @@ public class ModuoView extends View implements View.OnClickListener {
     }
 
     //getter-------------------setter--------------------------------------------------
-    public int getMinHeight() {
-        return minHeight;
-    }
-
-    public void setMinHeight(int minHeight) {
-        this.minHeight = minHeight;
-    }
-
-    public int getMaxHeight() {
-        return maxHeight;
-    }
-
-    public void setMaxHeight(int maxHeight) {
-        this.maxHeight = maxHeight;
-    }
-
-    public int getModuoWidth() {
-        return moduoWidth;
-    }
-
-    public void setModuoWidth(int moduoWidth) {
-        this.moduoWidth = moduoWidth;
-    }
-
-    public int getModuoHeight() {
-        return moduoHeight;
-    }
-
-    public void setModuoHeight(int moduoHeight) {
-        this.moduoHeight = moduoHeight;
-    }
 }
