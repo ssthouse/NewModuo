@@ -10,9 +10,6 @@ import android.view.View;
 import com.mingke.newmoduo.R;
 import com.mingke.newmoduo.control.util.CanvasUtil;
 import com.mingke.newmoduo.model.bean.ModuoRect;
-import com.mingke.newmoduo.model.event.ModuoBigEvent;
-
-import de.greenrobot.event.EventBus;
 
 /**
  * 魔哆:
@@ -46,7 +43,7 @@ public class ModuoView extends View implements View.OnClickListener {
             @Override
             public void run() {
                 //将魔哆范围管理类初始化
-                moduoRect = new ModuoRect(context, getWidth(), getHeight(), bigModuo);
+                moduoRect = new ModuoRect(ModuoView.this, getWidth(), getHeight(), bigModuo);
                 invalidate();
             }
         });
@@ -70,8 +67,13 @@ public class ModuoView extends View implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
+        // TODO: 2016/1/28 是不是点击的魔哆---现在魔哆的状态是大是小
         if (currentState == State.STATE_SMALL) {
-            EventBus.getDefault().post(new ModuoBigEvent());
+            // TODO: 2016/1/28 暂时改为走路试试
+            moduoRect.startWalk();
+//            EventBus.getDefault().post(new ModuoBigEvent());
+        }else{
+
         }
         invalidate();
     }
@@ -117,7 +119,7 @@ public class ModuoView extends View implements View.OnClickListener {
 
     private void drawSmall(Canvas canvas) {
 //        Timber.e("draw small");
-        CanvasUtil.drawBitmap(canvas, bigModuo, moduoRect.getOutWidth() / 2, moduoRect.getOutHeight() / 2,
+        CanvasUtil.drawBitmap(canvas, bigModuo, moduoRect.getCenterX(), moduoRect.getCenterY(),
                 moduoRect.getModuoWidth(), moduoRect.getModuoHeight());
     }
 
