@@ -19,7 +19,7 @@ public class AudioPlayButton extends TextView implements IAudioPlayBtnControl {
 
     //最长20秒对应的margin
     private int MAX_MARGIN_LEFT;
-    private int MAX_AUDIO_LENGTH = 20;
+    private static final int MAX_AUDIO_LENGTH = 20;
 
     private MsgBean audioMsg;
     private State currentState;
@@ -55,7 +55,7 @@ public class AudioPlayButton extends TextView implements IAudioPlayBtnControl {
         stopAnim();
         //改变长度
         int currentMargin;
-        if (audioMsg.getAudioDuration() > 20) {
+        if (audioMsg.getAudioDuration() > MAX_AUDIO_LENGTH) {
             currentMargin = MAX_MARGIN_LEFT;
         } else {
             currentMargin = (int) (audioMsg.getAudioDuration() / 20.0f * MAX_MARGIN_LEFT);
@@ -74,7 +74,7 @@ public class AudioPlayButton extends TextView implements IAudioPlayBtnControl {
             //切换为播放状态
             currentState = State.STATE_PLAYING;
             //尝试播放
-            AudioPlayer.getInstance(getContext()).playAudio(audioMsg.getAudioFilePath(), AudioPlayButton.this);
+            AudioPlayer.getInstance(getContext()).playAudio(audioMsg.getAudioFilePath(), this);
             //播放动画
             playAnim();
         } else if (currentState == State.STATE_PLAYING) {
@@ -88,6 +88,7 @@ public class AudioPlayButton extends TextView implements IAudioPlayBtnControl {
 
     @Override
     public void playAnim() {
+        currentState = State.STATE_PLAYING;
         //播放动画
         if (audioMsg.isFromModuo()) {
             setBackgroundResource(R.drawable.anim_audio_play_btn_left);

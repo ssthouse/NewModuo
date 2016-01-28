@@ -17,8 +17,6 @@ import com.mingke.newmoduo.view.widget.AudioPlayButton;
 import java.util.ArrayList;
 import java.util.List;
 
-import timber.log.Timber;
-
 /**
  * 魔哆聊天adapter
  * Created by ssthouse on 2016/1/24.
@@ -94,7 +92,6 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.Holder> {
         contentView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Timber.e("click!!!!!!!!!!!!!!!!");
                 playButton.onClick();
             }
         });

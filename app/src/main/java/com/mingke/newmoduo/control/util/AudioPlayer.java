@@ -23,7 +23,7 @@ public class AudioPlayer {
     private Context mContext;
 
     //当前播放音乐文件路径
-    private String currentFilePath;
+    private String currentFilePath = "";
     //当前控制的AudioButton
     private AudioPlayButton currentAudioBtn;
     //是否正在播放
@@ -44,9 +44,9 @@ public class AudioPlayer {
     //播放音频
     public void playAudio(String path, AudioPlayButton audioPlayButton) {
         //如果正在播放当前path文件, 返回
-        if(currentFilePath == path && isPlaying){
-            return;
-        }
+//        if (currentFilePath.equals(path) && isPlaying) {
+//            return;
+//        }
         currentFilePath = path;
         currentAudioBtn = audioPlayButton;
         try {
@@ -57,7 +57,7 @@ public class AudioPlayer {
             mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
-                    if(currentAudioBtn != null){
+                    if (currentAudioBtn != null) {
                         //停止动画
                         currentAudioBtn.stopAnim();
                     }
@@ -77,7 +77,7 @@ public class AudioPlayer {
     }
 
     public boolean isPlaying() {
-        if(mMediaPlayer == null){
+        if (mMediaPlayer == null) {
             return false;
         }
         return mMediaPlayer.isPlaying();
