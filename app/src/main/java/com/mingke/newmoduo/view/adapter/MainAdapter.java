@@ -12,10 +12,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.mingke.newmoduo.R;
+import com.mingke.newmoduo.control.util.DbHelper;
 import com.mingke.newmoduo.view.widget.AudioPlayButton;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import timber.log.Timber;
 
 /**
  * 魔哆聊天adapter
@@ -35,7 +38,12 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.Holder> {
     public MainAdapter(Context context, RecyclerView recyclerView) {
         this.mContext = context;
         this.mRecyclerView = recyclerView;
+        //初始化最多10条聊天记录
         msgList = new ArrayList<>();
+        List<MsgBean> initMsgList = DbHelper.getInitTenMsg();
+        for (int i = 0; i < initMsgList.size(); i++) {
+            msgList.add(0, initMsgList.get(i));
+        }
     }
 
     @Override
@@ -125,6 +133,20 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.Holder> {
         mRecyclerView.smoothScrollBy(0, msgList.size() * 200);
     }
 
+    //添加MsgBean列表
+    public void addMgList(List<MsgBean> newMsgList) {
+        if (newMsgList == null) {
+            Timber.e("没有更多的聊天记录了");
+            return;
+        }
+        for (int i = 0; i < newMsgList.size(); i++) {
+            msgList.add(0, newMsgList.get(i));
+        }
+        Timber.e("增加了: \t" + newMsgList.size());
+        notifyDataSetChanged();
+        mRecyclerView.smoothScrollBy(0, msgList.size() * 200);
+    }
+
     @Override
     public int getItemViewType(int position) {
         int msgType = msgList.get(position).getMsgType();
@@ -182,5 +204,15 @@ public class MainAdapter extends RecyclerView.Adapter<MainAdapter.Holder> {
                 statusView = (TextView) itemView.findViewById(R.id.chat_right_tv_status);
             }
         }
+    }
+
+    //getter------------------------setter---------------------------------------------------
+
+    public List<MsgBean> getMsgList() {
+        return msgList;
+    }
+
+    public void setMsgList(List<MsgBean> msgList) {
+        this.msgList = msgList;
     }
 }

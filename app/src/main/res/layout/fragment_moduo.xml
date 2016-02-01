@@ -6,20 +6,27 @@
 
     <!--魔哆-->
     <com.mingke.newmoduo.view.widget.ModuoView
-        android:clickable="true"
         android:id="@+id/id_moduo"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1"
+        android:clickable="true" />
 
-    <!--聊天列表-->
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/id_recycle_chat"
+    <!--聊天刷新-->
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/id_swipe_layout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:entries="@array/TestArray"
-        android:visibility="gone" />
+        android:visibility="gone">
+
+        <!--聊天列表-->
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/id_recycle_chat"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:entries="@array/TestArray" />
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 
     <!--语音按钮-->

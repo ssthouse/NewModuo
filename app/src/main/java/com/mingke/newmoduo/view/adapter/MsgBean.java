@@ -26,7 +26,7 @@ public class MsgBean extends Model{
     public static final String COLUMN_IMAGE_PATH = "ImgPath";
     //方向
     public static final String COLUMN_IS_FROM_MODUO = "IsModuo";
-    //发出事件
+    //发出时间
     public static final String COLUMN_TIME_STAMP = "TimeStamp";
 
     //消息类型枚
@@ -69,7 +69,7 @@ public class MsgBean extends Model{
     private long timeStamp;
 
     //空 构造方法
-    private MsgBean() {
+    public MsgBean() {
         super();
     }
 
@@ -77,10 +77,11 @@ public class MsgBean extends Model{
      * 获取一个实例
      */
     public static MsgBean getInstance(int msgType, int msgState, String content) {
-        //新建msg---初始化类型, 状态
+        //新建msg---初始化 类型---状态---时间
         MsgBean bean = new MsgBean();
         bean.setMsgType(msgType);
         bean.setMsgState(msgState);
+        bean.setTimeStamp(System.currentTimeMillis());
         switch (msgType) {
             case TYPE_MODUO_TEXT:
                 bean.setFromModuo(true);

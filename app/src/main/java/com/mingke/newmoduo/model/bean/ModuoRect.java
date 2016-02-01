@@ -2,11 +2,9 @@ package com.mingke.newmoduo.model.bean;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.os.Message;
 
-import com.mingke.newmoduo.R;
 import com.mingke.newmoduo.control.util.DimenUtil;
 import com.mingke.newmoduo.view.widget.ModuoView;
 
@@ -38,7 +36,7 @@ public class ModuoRect implements IModuoControl {
 
     //消息常量(控制魔哆动画)
     private static final int MSG_WALK = 1000;
-    private static final int MSG_WALK_SPACE = 4;
+    private static final int MSG_WALK_SPACE = 2;
 
     //是不是往左走
     private boolean isWalkLeft = true;
@@ -48,10 +46,6 @@ public class ModuoRect implements IModuoControl {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             switch (msg.what) {
-                //todo---走路
-                /*
-                改变ModuoRect四周位置
-                 */
                 case MSG_WALK:
                     if (isWalkLeft) {
                         walkLeft();
@@ -83,8 +77,6 @@ public class ModuoRect implements IModuoControl {
         this.outWidth = outWidth;
         //计算魔哆大小
         resetDimens();
-        //初始化bitmap
-        bigModuo = BitmapFactory.decodeResource(mContext.getResources(), R.drawable.moduo);
     }
 
     //根据外部宽高---重新计算魔哆大小
@@ -116,7 +108,7 @@ public class ModuoRect implements IModuoControl {
     //往左走
     private void walkLeft() {
         //步长
-        int stepLength = outWidth / 400;
+        int stepLength = outWidth / 200;
         if (centerX > 0) {
             centerX -= stepLength;
         } else {
@@ -128,7 +120,7 @@ public class ModuoRect implements IModuoControl {
     //往右走
     private void walkRight() {
         //步长
-        int stepLength = outWidth / 400;
+        int stepLength = outWidth / 200;
         if (centerX < outWidth) {
             centerX += stepLength;
         } else {

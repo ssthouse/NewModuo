@@ -3,6 +3,7 @@ package com.mingke.newmoduo.view.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.view.animation.AccelerateDecelerateInterpolator;
 
 import com.github.florent37.viewanimator.ViewAnimator;
 import com.mingke.newmoduo.R;
+import com.mingke.newmoduo.control.util.DbHelper;
 import com.mingke.newmoduo.control.util.DimenUtil;
 import com.mingke.newmoduo.model.event.ModuoBigEvent;
 import com.mingke.newmoduo.view.adapter.MainAdapter;
@@ -19,7 +21,16 @@ import com.mingke.newmoduo.view.adapter.MsgBean;
 import com.mingke.newmoduo.view.widget.ModuoView;
 import com.mingke.newmoduo.view.widget.record.RecordButton;
 
+import java.util.List;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 import de.greenrobot.event.EventBus;
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 /**
  * 魔哆主界面
@@ -27,15 +38,23 @@ import de.greenrobot.event.EventBus;
  */
 public class ModuoFragment extends Fragment {
 
-    private ModuoView moduoView;
-    private RecordButton btnRecord;
+    //魔哆图案
+    @Bind(R.id.id_moduo)
+    ModuoView moduoView;
 
-    private RecyclerView recycleChat;
-    private MainAdapter mAdapter;
+    //录音按钮
+    @Bind(R.id.id_btn_record)
+    RecordButton btnRecord;
+
+    //聊天列表
+    @Bind(R.id.id_swipe_layout)
+    SwipeRefreshLayout swipeLayout;
+    @Bind(R.id.id_recycle_chat)
+    RecyclerView recycleChat;
+    MainAdapter mAdapter;
 
     private int bigModuoHeight;
     private int smallModuoHeight;
-
     private static final int ANIMATE_TWEEN = 500;
 
     @Nullable
@@ -43,6 +62,7 @@ public class ModuoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         EventBus.getDefault().register(this);
         View rootView = inflater.inflate(R.layout.fragment_moduo, container, false);
+        ButterKnife.bind(this, rootView);
         initView(rootView);
         return rootView;
     }
@@ -54,35 +74,49 @@ public class ModuoFragment extends Fragment {
 
     private void initView(View rootView) {
         //聊天列表
-        recycleChat = (RecyclerView) rootView.findViewById(R.id.id_recycle_chat);
         recycleChat.setLayoutManager(new LinearLayoutManager(getContext()));
         mAdapter = new MainAdapter(getContext(), recycleChat);
         recycleChat.setAdapter(mAdapter);
-        for (int i = 0; i < 10; i++) {
-            MsgBean msgBean = MsgBean.getInstance(MsgBean.TYPE_MODUO_TEXT, MsgBean.STATE_SENDING, "我在发送一条消息");
-            msgBean.save();
-            mAdapter.addMsg(msgBean);
-        }
 
-        moduoView = (ModuoView) rootView.findViewById(R.id.id_moduo);
+        swipeLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                // TODO: 2016/2/1 刷新加载数据
+                Observable.just(mAdapter.getMsgList().get(0))
+                        .map(new Func1<MsgBean, List<MsgBean>>() {
+                            @Override
+                            public List<MsgBean> call(MsgBean msgBean) {
+                                return DbHelper.getLastTenMsgBean(msgBean);
+                            }
+                        })
+                        .subscribeOn(Schedulers.newThread())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Action1<List<MsgBean>>() {
+                            @Override
+                            public void call(List<MsgBean> msgList) {
+                                mAdapter.addMgList(msgList);
+                                //清除刷新状态
+                                swipeLayout.setRefreshing(false);
+                            }
+                        });
+            }
+        });
+
         moduoView.post(new Runnable() {
             @Override
             public void run() {
                 initDimens();
             }
         });
-
-        //录音按钮
-        btnRecord = (RecordButton) rootView.findViewById(R.id.id_btn_record);
     }
 
     //魔哆变小
     private void animateToSmall() {
-        if(moduoView.getCurrentState() == ModuoView.State.STATE_SMALL){
+        if (moduoView.getCurrentState() == ModuoView.State.STATE_SMALL) {
             return;
         }
-        recycleChat.setVisibility(View.VISIBLE);
-        ViewAnimator.animate(recycleChat)
+        swipeLayout.setVisibility(View.VISIBLE);
+        ViewAnimator.animate(swipeLayout)
                 .height(0, bigModuoHeight - smallModuoHeight)
                 .andAnimate(moduoView)
                 .height(bigModuoHeight, smallModuoHeight)
@@ -93,10 +127,10 @@ public class ModuoFragment extends Fragment {
 
     //魔哆变大
     private void animateToBig() {
-        if(moduoView.getCurrentState() == ModuoView.State.STATE_BIG){
+        if (moduoView.getCurrentState() == ModuoView.State.STATE_BIG) {
             return;
         }
-        ViewAnimator.animate(recycleChat)
+        ViewAnimator.animate(swipeLayout)
                 .height(bigModuoHeight - smallModuoHeight, 0)
                 .andAnimate(moduoView)
                 .height(smallModuoHeight, bigModuoHeight)
@@ -105,20 +139,12 @@ public class ModuoFragment extends Fragment {
                 .start();
     }
 
-    /**
-     * 魔哆变大事件回调
-     *
-     * @param event
-     */
+    //魔哆变大事件回调
     public void onEventMainThread(ModuoBigEvent event) {
         animateToBig();
     }
 
-    /**
-     * 添加msg回调
-     *
-     * @param msgBean
-     */
+    //添加msgBen回调
     public void onEventMainThread(MsgBean msgBean) {
         if (msgBean == null) {
             return;
@@ -127,6 +153,8 @@ public class ModuoFragment extends Fragment {
         animateToSmall();
         //添加数据到对话框
         mAdapter.addMsg(msgBean);
+        //保存到数据库
+        DbHelper.saveMsgBean(msgBean);
     }
 
     @Override
